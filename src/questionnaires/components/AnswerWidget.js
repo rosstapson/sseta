@@ -27,58 +27,55 @@ export default class AnswerWidget extends Component {
         }
         else 
             return(
-                <div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input 
-                                            type="radio" value="1" 
-                                            checked={this.state.selectedOption === '1'} 
-                                            onChange={this.handleOptionChange} /><br/>
-                                            <img src={img1} alt="Very Unhappy" height="40" width="40" />
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input 
-                                            type="radio" value="2" 
-                                            checked={this.state.selectedOption === '2'} 
-                                            onChange={this.handleOptionChange} /><br/>
-                                            <img src={img2} alt="Unhappy" height="40" width="40" />
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input 
-                                            type="radio" value="3" 
-                                            checked={this.state.selectedOption === '3'}  
-                                            onChange={this.handleOptionChange} /><br/>
-                                            <img src={img3} alt="Neutral" height="40" width="40" />
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input 
-                                            type="radio" value="4" 
-                                            checked={this.state.selectedOption === '4'}  
-                                            onChange={this.handleOptionChange} /><br/>
-                                            <img src={img4} alt="Happy" height="40" width="40" />
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input 
-                                            type="radio" value="5" 
-                                            checked={this.state.selectedOption === '5'} 
-                                            onChange={this.handleOptionChange} /><br/>
-                                            <img src={img5} alt="Very Happy" height="40" width="40" />
-                                    </label>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div  style={{                
+                    display: 'flex',
+                    flex: '1',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    paddingBottom: '40px' 
+                }}>
+                   
+                        
+                    <label>
+                        <input 
+                            type="radio" value="1" 
+                            checked={this.state.selectedOption === '1'} 
+                            onChange={this.handleOptionChange} /><br/>
+                            <img src={img1} alt="Very Unhappy" height="40" width="40" />
+                    </label>
+                
+                    <label>
+                        <input 
+                            type="radio" value="2" 
+                            checked={this.state.selectedOption === '2'} 
+                            onChange={this.handleOptionChange} /><br/>
+                            <img src={img2} alt="Unhappy" height="40" width="40" />
+                    </label>
+                
+                    <label>
+                        <input 
+                            type="radio" value="3" 
+                            checked={this.state.selectedOption === '3'}  
+                            onChange={this.handleOptionChange} /><br/>
+                            <img src={img3} alt="Neutral" height="40" width="40" />
+                    </label>
+                
+                    <label>
+                        <input 
+                            type="radio" value="4" 
+                            checked={this.state.selectedOption === '4'}  
+                            onChange={this.handleOptionChange} /><br/>
+                            <img src={img4} alt="Happy" height="40" width="40" />
+                    </label>
+                
+                    <label>
+                        <input 
+                            type="radio" value="5" 
+                            checked={this.state.selectedOption === '5'} 
+                            onChange={this.handleOptionChange} /><br/>
+                            <img src={img5} alt="Very Happy" height="40" width="40" />
+                    </label>
+                                
                 </div>
             )
     }
