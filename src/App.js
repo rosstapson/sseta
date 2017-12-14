@@ -37,8 +37,9 @@ class App extends Component {
       alert("Invalid user credentials");
       return;
     }
-    if (user.username === registered && user.password === regPassword) {      
-      this.setState({isLoggedIn: "user", user: user});
+    if (user.username === registered && user.password === regPassword) {
+      //localStorage.setItem("token", "user");
+      this.setState({isLoggedIn: "user"});
     }
     else {
       alert("Invalid User Credentials")
@@ -47,12 +48,16 @@ class App extends Component {
   registerUser = (user) => {
     localStorage.setItem("username", user.username);
     localStorage.setItem("password", user.password);
+    this.setState({user: user, showLogin: true});
+  }
+  showLogin = () => {
+    let toggle = !this.state.showLogin;
+    this.setState({showLogin: toggle});
   }
   render() {
     return (
       <Router>
-        <div className="App">
-        
+        <div className="App">        
           <div>
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
@@ -64,12 +69,26 @@ class App extends Component {
         }
         {!this.state.isLoggedIn && this.state.showLogin &&
           <div>
-            <LoginWidget loginUser={this.loginUser}/>            
+            <LoginWidget loginUser={this.loginUser}/>
+            Don't have an account?<br/>
+            <button
+              style={{
+                padding: '10px',
+                backgroundColor: '#62DFF8'
+              }}
+              onClick={this.showLogin}>Sign Up</button>
           </div>
         }
         {!this.state.isLoggedIn && !this.state.showLogin &&
           <div>
-            <RegisterWidget registerUser={this.registerUser} />          
+            <RegisterWidget registerUser={this.registerUser} />
+            Already signed up? <br/>
+            <button
+              style={{
+                padding: '10px',
+                backgroundColor: '#62DFF8'
+              }}
+              onClick={this.showLogin}>Sign In</button>
           </div>
         }
         

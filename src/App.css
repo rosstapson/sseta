@@ -7,7 +7,7 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #282C35;
   height: 250px;
   padding: 20px;
   color: white;
@@ -15,6 +15,7 @@
 
 .App-title {
   font-size: 1.5em;
+  color: #62DFF8;
 }
 
 .App-intro {
@@ -24,4 +25,15 @@
 .table{
   width: 70%;
   border-collapse: collapse;  
+}
+
+.notification{
+  width: 70%;
+  border-style: solid;
+  border-color: dodgerblue
+}
+
+.button {
+  padding: '10px';
+  background-color: '#282C35';
 }

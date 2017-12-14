@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import SelectCountry from './SelectCountry';
+import '../../App.css';
 
 export default class RegisterWidget extends Component {
     constructor(props) {
@@ -8,6 +10,7 @@ export default class RegisterWidget extends Component {
                 username: "",
                 password: "",
                 confirmPassword:"",
+                company: ""
             },            
             passwordValid: true
         }
@@ -71,6 +74,7 @@ export default class RegisterWidget extends Component {
                         <input 
                             type="password"                              
                             id="password"
+                            placeholder="Password" 
                             onChange={this.validatePassword}
                             />
                             {!this.state.passwordValid &&
@@ -84,6 +88,7 @@ export default class RegisterWidget extends Component {
                     <input 
                         type="password" 
                         id="confirmPassword"
+                        placeholder="Confirm Password" 
                         onChange={this.validateConfirmPassword}
                         />
                         {!this.state.passwordValid &&
@@ -91,12 +96,74 @@ export default class RegisterWidget extends Component {
                         }
                     </td>                    
                 </tr>
-                           
+                <tr>
+                    <td>Company</td>
+                    <td>
+                        <input 
+                            placeholder="Company" 
+                            id="company"
+                            onChange={this.handleChange}
+                            />
+                    </td>
+                </tr>
+                <tr>
+                <td>Telephone</td>
+                <td>
+                    <input 
+                        placeholder="Telephone" 
+                        id="telephone"
+                        onChange={this.handleChange}
+                        />
+                </td>
+            </tr>
+            <tr>
+            <td>Division</td>
+                <td>
+                    <input 
+                        placeholder="Division" 
+                        id="division"
+                        onChange={this.handleChange}
+                        />
+                </td>
+            </tr>
+            <tr>
+            <td>Address</td>
+                <td>
+                    <input 
+                        placeholder="Address" 
+                        id="address"
+                        onChange={this.handleChange}
+                        />
+                </td>
+            </tr>
+            <tr>
+            <td>State</td>
+                <td>
+                    <input 
+                        placeholder="State" 
+                        id="state"
+                        onChange={this.handleChange}
+                        />
+                </td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td>
+                    <SelectCountry
+                        id="country"            
+                        handleChange={this.handleChange}
+                    />
+                </td>
+            </tr>  
                     </tbody></table>                    
-                </div>
+                </div><br/><br/>
                 <button 
-                type="button" 
-                onClick={this.registerUser}>Submit</button>
+                type="button"
+                style={{
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'
+                }}
+                onClick={this.registerUser}>Submit</button><br/><br/>
             </div>
         )
     }

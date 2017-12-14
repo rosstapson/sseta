@@ -27,16 +27,22 @@ export default class  LoginWidget extends Component {
                     id="username"
                     onChange={this.handleChange}
                     />
+                    <br/><br/>
                 <input 
                     type="password" 
-                    placeholder="Username" 
+                    placeholder="Password" 
                     id="password"
                     onChange={this.handleChange}
                     />
+                    <br/><br/>
                 <button 
-                    type="button" 
+                    type="button"
+                    style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
                     onClick={this.loginUser
-                    }>Submit</button>
+                    }>Submit</button><br/><br/>
             </div>
         )
     }
