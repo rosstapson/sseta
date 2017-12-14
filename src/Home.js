@@ -17,6 +17,7 @@ export default class Home extends Component {
             showQuestionnaire: !this.state.showQuestionnaire
         })
     }
+    
     render() {
         return(
             <div style={{                
@@ -25,7 +26,7 @@ export default class Home extends Component {
                 flexDirection: 'column',
                 justifyContent: 'center'
               }}>
-                <h1 className="App-intro">Welcome back, {this.state.user.username}</h1><br/>
+                <h1 className="App-intro">Welcome back</h1><br/>
                 {this.state.questionnairePending &&
                 <div style={{
                     borderStyle: "solid",

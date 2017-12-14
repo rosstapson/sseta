@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import QuestWidget from '../components/QuestWidget';
+import QuestionnaireWidget from '../components/QuestionnaireWidget';
 
 export default class QuestContainer extends Component {
     constructor(props) {
@@ -11,9 +11,9 @@ export default class QuestContainer extends Component {
     handleSubmit = () => {
         alert("submitted");
     }
-    handleChange = (event) => {        
+    handleChange = (event) => {       
         let result = {...this.state.result};        
-        result[event.target.id] = event.target.value;        
+        result[event.question] = event.answer;        
         this.setState({ result: result});        
     }
     render() {
@@ -22,10 +22,11 @@ export default class QuestContainer extends Component {
                 display: 'flex',
                 flex: '1',
                 flexDirection: 'column',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                
             }}>
             <h1 className="App-intro">3-Month Questionnaire</h1><br/><br/><br/>
-            <QuestWidget handleChange={this.handleChange} />
+            <QuestionnaireWidget handleChange={this.handleChange} />
             <div>
             <button 
                 style={{
