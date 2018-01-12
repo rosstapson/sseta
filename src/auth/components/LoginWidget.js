@@ -5,7 +5,7 @@ export default class  LoginWidget extends Component {
         super(props);
         this.state = {
             user: {
-                username: "",
+                email: "",
                 password: ""
             }
         }
@@ -24,7 +24,7 @@ export default class  LoginWidget extends Component {
                 <h1 className="App-intro">Sign In</h1>
                 <input 
                     placeholder="Username" 
-                    id="username"
+                    id="email"
                     onChange={this.handleChange}
                     />
                     <br/><br/>
@@ -43,6 +43,13 @@ export default class  LoginWidget extends Component {
                     }}
                     onClick={this.loginUser
                     }>Submit</button><br/><br/>
+                    <button 
+                    type="button"
+                    style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.props.seeAllUsers}>All Users, Zomg</button>
             </div>
         )
     }
