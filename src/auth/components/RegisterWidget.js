@@ -10,7 +10,14 @@ export default class RegisterWidget extends Component {
                 username: "",
                 password: "",
                 confirmPassword:"",
-                company: ""
+                company: "",
+                role: "",
+                telephone: "",
+                division: "",
+                address: "",
+                state: "",
+                country: "",
+
             },            
             passwordValid: true
         }
@@ -41,6 +48,7 @@ export default class RegisterWidget extends Component {
         this.setState({ user: user});        
     }
     registerUser = () => {
+        console.log(this.state.user);
         if (!this.state.passwordValid) {
             alert("Passwords Don't Match")
             return;
@@ -102,6 +110,16 @@ export default class RegisterWidget extends Component {
                         <input 
                             placeholder="Company" 
                             id="company"
+                            onChange={this.handleChange}
+                            />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Job Title/Role</td>
+                    <td>
+                        <input 
+                            placeholder="Job Title" 
+                            id="role"
                             onChange={this.handleChange}
                             />
                     </td>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.jpg';
 import './App.css';
+import { API_ROOT } from './config'; 
 
 import {
   BrowserRouter as Router,  
@@ -24,10 +25,67 @@ class App extends Component {
       showLogin: true
     }
   }
-  
+  handleLogin = (user) => {    
+    let config = {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({user: user})
+    }
+    try {
+    return fetch(API_ROOT + "/login", config)
+        .then(response =>
+            { 
+                if (!response.ok) {
+                    alert("Incorrect credentials");
+                }
+                else {
+                  response.json().then(json => {
+                    localStorage.setItem("token", json.token);
+                    this.setState({showLogin: false, isLoggedIn: true});
+                  });                  
+                }
+            });
+        
+    }
+    catch(err) {
+        alert(err);
+    }
+  }
+  handleLogout = () => {
+    localStorage.removeItem("token");
+    this.setState({
+      isLoggedIn: false,
+      isAdmin: false,
+      showLogin: true
+    });
+  }
   registerUser = (user) => {
-    localStorage.setItem("username", user.username);
-    localStorage.setItem("password", user.password);
+    let config = {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+        //'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({user: user})
+  }
+  try {
+  return fetch(API_ROOT + "/users", config)
+      .then(response =>
+          { 
+            if (!response.ok) {
+              alert("Error");
+            }
+            else {
+              this.showLogin();
+            }
+          });
+      
+  }
+  catch(err) {
+      alert(err);
+  }
     this.setState({user: user, showLogin: true});
   }
   showLogin = () => {
@@ -45,11 +103,11 @@ class App extends Component {
             </header>
         </div>
         {this.state.isLoggedIn &&
-          <Home user={this.state.user}/>
+          <Home user={this.state.user} handleLogout={this.handleLogout}/>
         }
         {!this.state.isLoggedIn && this.state.showLogin &&
           <div>
-            <Login />
+            <Login handleLogin={this.handleLogin}/>
             Don't have an account?<br/>
             <button
               style={{

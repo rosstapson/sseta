@@ -49,8 +49,17 @@ export default class Home extends Component {
                         handleSubmit={this.handleSubmit}
                     />
                 }
-                <br/><br/><br/><br/>
+                
+                <br/><br/>
                 <div><a href="https://mysseta.slack.com/messages/C8EHYBB52/">Slack Video Conferencing</a></div>
+                <br/><br/>
+                <div>
+                <button style={{    
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.props.handleLogout}>Log Out</button>
+                </div>
             </div>
         )
     }
