@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 
+
 export default class  LoginWidget extends Component {
     constructor(props) {
         super(props);
+        //let isAdmin = localStorage.getItem("isAdmin");
         this.state = {
             user: {
+                //isAdmin: isAdmin,
                 email: "",
                 password: ""
             }
@@ -35,6 +38,16 @@ export default class  LoginWidget extends Component {
                     onChange={this.handleChange}
                     />
                     <br/><br/>
+                
+                <button 
+                    type="button"
+                    style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.props.seeAllUsers}>All Users, Zomg</button>
+
+                
                 <button 
                     type="button"
                     style={{
@@ -43,13 +56,7 @@ export default class  LoginWidget extends Component {
                     }}
                     onClick={this.loginUser
                     }>Submit</button><br/><br/>
-                    <button 
-                    type="button"
-                    style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.props.seeAllUsers}>All Users, Zomg</button>
+                    
             </div>
         )
     }

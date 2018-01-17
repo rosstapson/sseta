@@ -21,10 +21,17 @@ export default class Login extends Component {
         }
         try {
         return fetch(API_ROOT + "/users", config)
-            .then(response =>
-                { 
-                    console.log(response)
-                });                    
+        .then(response =>
+            { 
+                if (!response.ok) {
+                    alert("Unable to fetch users");
+                }
+                else {
+                  response.json().then(json => {
+                    console.log(json);
+                  });                  
+                }
+            });                  
         }
         catch(err) {
             alert(err);
