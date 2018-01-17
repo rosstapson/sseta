@@ -36,7 +36,7 @@ class App extends Component {
     try {
     return fetch(API_ROOT + "/login", config)
         .then(response =>
-            { 
+            {
                 if (!response.ok) {
                     alert("Incorrect credentials");
                 }

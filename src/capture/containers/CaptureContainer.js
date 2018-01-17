@@ -5,7 +5,10 @@ export default class CaptureContainer extends Component {
 
     render() {
         return(
-            <div><QuestionnaireMaker handleCancel={this.props.handleCancel}/></div>
+            <div><QuestionnaireMaker 
+                saveQuestionnaire={this.props.saveQuestionnaire}
+                handleCancel={this.props.handleCancel}
+            /></div>
         )
     }
 }

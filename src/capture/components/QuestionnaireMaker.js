@@ -37,9 +37,15 @@ export default class Questionnaire extends Component {
     //this.setState({items: this.state.items.filter(item => item.news_id == id )
   }
   handleSave = () => {
-      alert("Saving " + this.state.formTitle);
-      console.log(this.state.formTitle);
-      console.log(this.state.formEntries);
+    if (this.state.formEntries.length === 0) {
+      alert("Empty Questionnaire");
+      return;
+    }
+    let questionnaire = {
+      title: this.state.formTitle,
+      entries: this.state.formEntries
+    }    
+    this.props.saveQuestionnaire(questionnaire); 
   }
   handleCancel = () => {
      
@@ -92,7 +98,7 @@ export default class Questionnaire extends Component {
           <button  style={{
             padding: '10px',
             backgroundColor: '#62DFF8'}}
-            onClick={this.handleSave}>Save Questionnaire</button>
+            onClick={this.handleSave}>Save Questionnaire</button>           
           <button
           style={{
             padding: '10px',

@@ -47,8 +47,7 @@ export default class RegisterWidget extends Component {
         user[event.target.id] = event.target.value;        
         this.setState({ user: user});        
     }
-    registerUser = () => {
-        console.log(this.state.user);
+    registerUser = () => {        
         if (!this.state.passwordValid) {
             alert("Passwords Don't Match")
             return;

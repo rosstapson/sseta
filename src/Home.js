@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import QuestContainer from './questionnaires/containers/QuestContainer';
 import CaptureContainer from './capture/containers/CaptureContainer';
 import './App.css';
+import { API_ROOT } from './config';
 
 export default class Home extends Component {
     constructor(props) {
@@ -21,6 +22,38 @@ export default class Home extends Component {
     }
     toggleCapture = () => {
         this.setState({ showCapture: !this.state.showCapture})
+    }
+    saveQuestionnaire = (questionnaire) => {
+        let config = {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({questionnaire: questionnaire}),
+            token: localStorage.getItem("token")
+        }
+        try {
+            return fetch(API_ROOT + "/questionnaires", config)
+                .then(response =>
+                    {
+                        if (!response.ok) {
+                            alert("Unable to save Questionnaire");
+                        }
+                        else {
+                          response.json().then(json => {
+                              //we've gotten the questionnaire back, 
+                              //so we can display it. 
+                              //maybe we need to show a preview?
+                            alert("Questionnaire saved");
+                            this.setState({showCapture: false});
+                          });                  
+                        }
+                    });
+                
+            }
+            catch(err) {
+                alert(err);
+            }
     }
     
     render() {
@@ -68,7 +101,10 @@ export default class Home extends Component {
                     onClick={this.toggleCapture}>Capture Questionnaire</button>
                 }
                 {this.state.showCapture && 
-                    <CaptureContainer handleCancel={this.toggleCapture} />
+                    <CaptureContainer
+                        saveQuestionnaire={this.saveQuestionnaire}
+                        handleCancel={this.toggleCapture} 
+                    />
                 }
                 </div>
                 <br/><br/>
