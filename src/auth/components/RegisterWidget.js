@@ -70,7 +70,7 @@ export default class RegisterWidget extends Component {
                         <td>
                             <input 
                                 placeholder="Email" 
-                                id="username"
+                                id="email"
                                 onChange={this.handleChange}
                                 />
                         </td>
