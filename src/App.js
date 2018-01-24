@@ -38,7 +38,7 @@ class App extends Component {
         .then(response =>
             {
                 if (!response.ok) {
-                    alert("Incorrect credentials");
+                    alert("Invalid credentials");
                 }
                 else {
                   response.json().then(json => {

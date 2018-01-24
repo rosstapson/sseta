@@ -65,6 +65,16 @@ export default class RegisterWidget extends Component {
                     justifyContent: 'center'
                 }}>
                 <table  className="table" style={{}}><tbody>
+                <tr>
+                        <td>Name</td>
+                        <td>
+                            <input 
+                                placeholder="Name" 
+                                id="name"
+                                onChange={this.handleChange}
+                                />
+                        </td>
+                    </tr>
                     <tr>
                         <td>Email address</td>
                         <td>

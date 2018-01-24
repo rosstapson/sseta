@@ -9,7 +9,7 @@ export default class QuestContainer extends Component {
         }
     }
     handleSubmit = () => {
-        alert("submitted");
+        alert("Submitted");
     }
     handleChange = (event) => {       
         let result = {...this.state.result};        

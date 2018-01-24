@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import QuestContainer from './questionnaires/containers/QuestContainer';
+import QuestionnaireList from './questionnaires/containers/QuestionnaireList';
 import CaptureContainer from './capture/containers/CaptureContainer';
 import './App.css';
 import { API_ROOT } from './config';
@@ -11,7 +12,8 @@ export default class Home extends Component {
             user: this.props.user,
             questionnairePending: true,
             showQuestionnaire:false,
-            showCapture: false
+            showCapture: false,
+            showMyQuestionnaires: true
         }
     }
     toggleQuestionnaire = () => {
@@ -81,8 +83,12 @@ export default class Home extends Component {
                     }}
                     onClick={this.toggleQuestionnaire}>Go to questionnaire</button></div>
                 }
+                {this.state.showMyQuestioinnaires &&
+                    <QuestionnaireList />
+                }
                 {this.state.showQuestionnaire &&
                     <QuestContainer 
+                        questionnaireId={'5a61f38e686f75338fa868b0'}
                         handleCancel={this.toggleQuestionnaire}
                         handleSubmit={this.handleSubmit}
                     />
