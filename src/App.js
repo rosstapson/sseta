@@ -14,7 +14,7 @@ import Home from './Home';
 class App extends Component {
   constructor(props) {
     super(props);
-    let isLoggedIn = localStorage.getItem("token");
+    let isLoggedIn = localStorage.getItem("user");
     let isAdmin = false;
     if (isLoggedIn === "isAdmin") {
       isAdmin = true;
@@ -42,7 +42,9 @@ class App extends Component {
                 }
                 else {
                   response.json().then(json => {
-                    localStorage.setItem("token", json.token);
+                    let user = json.user;                    
+                    localStorage.setItem("username", user.email);
+                    localStorage.setItem("token", user.token)
                     this.setState({showLogin: false, isLoggedIn: true});
                   });                  
                 }
@@ -54,7 +56,7 @@ class App extends Component {
     }
   }
   handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     this.setState({
       isLoggedIn: false,
       isAdmin: false,

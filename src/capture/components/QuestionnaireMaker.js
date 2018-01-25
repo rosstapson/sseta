@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import cuid from 'cuid';
+//import cuid from 'cuid';
 
 export default class Questionnaire extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export default class Questionnaire extends Component {
       if (!entry.answerType || entry.answerType === '') {
         entry.answerType = 'Scale of 1 to 5';
       }
-      entry.id = cuid();
+      //entry.id = cuid();
       entries.push(entry);
       this.refs.id.value = '';
       this.refs.answerType.value = 'Scale of 1 to 5';

@@ -11,16 +11,49 @@ export default class Home extends Component {
         this.state = {
             user: this.props.user,
             questionnairePending: true,
-            showQuestionnaire:false,
+            showTakeQuestionnaire:false,
             showCapture: false,
-            showMyQuestionnaires: true
+            showMyQuestionnaires: false,
+            myQuestionnaires: []
+        }
+    }
+    componentDidMount = () => {
+        console.log(localStorage.getItem('user'));
+        //fetch questionnaire ids names and refs, set state
+        let config = {
+            method: 'get',
+            headers: {
+              'content-type': 'application/json'
+            },
+            //body: {user: {email: localStorage.getItem("username"), token: localStorage.getItem("token")}}
+        }
+        try {
+        return fetch(API_ROOT + "/questionnaire_list", config)
+            .then(response =>
+                {
+                    if (!response.ok) {
+                        alert("Unable to fetch questionnaire list.");
+                    }
+                    else {
+                      response.json().then(json => {                        
+                        this.setState({myQuestionnaires: json });
+                      });                  
+                    }
+                });
+            
+        }
+        catch(err) {
+            alert(err);
         }
     }
     toggleQuestionnaire = () => {
         this.setState({
             questionnairePending: !this.state.questionnairePending,
-            showQuestionnaire: !this.state.showQuestionnaire
+            showTakeQuestionnaire: !this.state.showTakeQuestionnaire
         })
+    }
+    toggleQuestionnaireList = () => {
+        this.setState({ showMyQuestionnaires: !this.state.showMyQuestionnaires})
     }
     toggleCapture = () => {
         this.setState({ showCapture: !this.state.showCapture})
@@ -83,10 +116,25 @@ export default class Home extends Component {
                     }}
                     onClick={this.toggleQuestionnaire}>Go to questionnaire</button></div>
                 }
-                {this.state.showMyQuestioinnaires &&
+                <div style={{
+                    borderStyle: "solid",
+                    borderColor: '#62DFF8', 
+                    padding: '10px',
+                    width: "50%",
+                    alignSelf: "center"}} >
+                {this.state.showMyQuestionnaires &&
                     <QuestionnaireList />
                 }
-                {this.state.showQuestionnaire &&
+                {!this.state.showMyQuestionnaires &&
+                    <button 
+                    style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.toggleQuestionnaireList}>See my questionnaires</button>
+                }
+                </div>
+                {this.state.showTakeQuestionnaire &&
                     <QuestContainer 
                         questionnaireId={'5a61f38e686f75338fa868b0'}
                         handleCancel={this.toggleQuestionnaire}
