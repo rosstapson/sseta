@@ -18,14 +18,14 @@ export default class Home extends Component {
         }
     }
     componentDidMount = () => {
-        console.log(localStorage.getItem('user'));
+        console.log(localStorage.getItem('username'));
         //fetch questionnaire ids names and refs, set state
         let config = {
-            method: 'get',
+            method: 'post',
             headers: {
               'content-type': 'application/json'
             },
-            //body: {user: {email: localStorage.getItem("username"), token: localStorage.getItem("token")}}
+            body: JSON.stringify({email: localStorage.getItem("username"), token: localStorage.getItem("token")})
         }
         try {
         return fetch(API_ROOT + "/questionnaire_list", config)
@@ -35,7 +35,8 @@ export default class Home extends Component {
                         alert("Unable to fetch questionnaire list.");
                     }
                     else {
-                      response.json().then(json => {                        
+                        response.json().then(json => {
+                        console.log("zomg!!!!");
                         this.setState({myQuestionnaires: json });
                       });                  
                     }
@@ -64,8 +65,8 @@ export default class Home extends Component {
             headers: {
               'content-type': 'application/json'
             },
-            body: JSON.stringify({questionnaire: questionnaire}),
-            token: localStorage.getItem("token")
+            body: JSON.stringify({questionnaire: questionnaire, token: localStorage.getItem("token")})
+            
         }
         try {
             return fetch(API_ROOT + "/questionnaires", config)
@@ -75,10 +76,10 @@ export default class Home extends Component {
                             alert("Unable to save Questionnaire");
                         }
                         else {
+                            console.log(response)
                           response.json().then(json => {
-                              //we've gotten the questionnaire back, 
-                              //so we can display it. 
-                              //maybe we need to show a preview?
+                              // the json isn't terribly important, unless we decide to display it 
+                              // straight away.
                             alert("Questionnaire saved");
                             this.setState({showCapture: false});
                           });                  
@@ -123,7 +124,7 @@ export default class Home extends Component {
                     width: "50%",
                     alignSelf: "center"}} >
                 {this.state.showMyQuestionnaires &&
-                    <QuestionnaireList />
+                    <QuestionnaireList questionnaires={this.state.myQuestionnaires}/>
                 }
                 {!this.state.showMyQuestionnaires &&
                     <button 

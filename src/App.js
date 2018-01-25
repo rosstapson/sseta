@@ -14,7 +14,7 @@ import Home from './Home';
 class App extends Component {
   constructor(props) {
     super(props);
-    let isLoggedIn = localStorage.getItem("user");
+    let isLoggedIn = localStorage.getItem("token");
     let isAdmin = false;
     if (isLoggedIn === "isAdmin") {
       isAdmin = true;
@@ -41,10 +41,9 @@ class App extends Component {
                     alert("Invalid credentials");
                 }
                 else {
-                  response.json().then(json => {
-                    let user = json.user;                    
-                    localStorage.setItem("username", user.email);
-                    localStorage.setItem("token", user.token)
+                  response.json().then(json => {                                  
+                    localStorage.setItem("username", json.email);
+                    localStorage.setItem("token", json.token)
                     this.setState({showLogin: false, isLoggedIn: true});
                   });                  
                 }
@@ -56,7 +55,8 @@ class App extends Component {
     }
   }
   handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
     this.setState({
       isLoggedIn: false,
       isAdmin: false,
