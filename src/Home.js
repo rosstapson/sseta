@@ -10,7 +10,7 @@ export default class Home extends Component {
         super(props);
         this.state = {
             user: this.props.user,
-            questionnairePending: true,
+            questionnairePending: false,
             showTakeQuestionnaire:false,
             showCapture: false,
             showMyQuestionnaires: false,
@@ -48,7 +48,7 @@ export default class Home extends Component {
     }
     toggleQuestionnaire = () => {
         this.setState({
-            questionnairePending: !this.state.questionnairePending,
+            //questionnairePending: !this.state.questionnairePending,
             showTakeQuestionnaire: !this.state.showTakeQuestionnaire
         })
     }
