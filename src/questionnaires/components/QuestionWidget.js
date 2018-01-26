@@ -4,14 +4,10 @@ import AnswerWidget from './AnswerWidget';
 export default class QuestionWidget extends Component {
     constructor(props) {
         super(props);
-        let answer = '3';
-        if (this.props.question.answer) {
-            answer = this.props.question.answer
-        }
-        console.log("answer: " + answer)
+        //console.log("answer: " + answer)
         this.state = {         
             question: this.props.question,
-            answer: answer
+            answer: this.props.question.answer
         }
     }
         handleAnswer = (event) => {
@@ -45,7 +41,7 @@ export default class QuestionWidget extends Component {
                                         handleAnswer={this.handleAnswer} 
                                         question = {this.props.question}                                        
                                         id={this.state.id}
-                                        type = {this.state.type}
+                                        type = {this.state.question.answer_type}
                                         answer={this.state.answer}/>
                                 </td>
                             </tr>

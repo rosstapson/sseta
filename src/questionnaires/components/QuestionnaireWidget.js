@@ -5,10 +5,15 @@ import QuestionWidget from './QuestionWidget';
 // like 'multiple-chose' versus 'text' 
 export default class QuestionnaireWidget extends Component {
     constructor(props) {
-        super(props);            
+        super(props);
+        let questionnaire = this.props.questionnaire;
+        questionnaire.formEntries.forEach(question => {
+            if (!question.answer && question.answer_type !== 'Text') {
+                question.answer = '3';                
+            }
+        })
         this.state= {           
-            questionnaire: this.props.questionnaire          
-            
+            questionnaire: questionnaire
         }
     }
     handleAnswer = (answer) => {        

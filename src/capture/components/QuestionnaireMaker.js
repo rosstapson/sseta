@@ -18,8 +18,7 @@ export default class Questionnaire extends Component {
   }
   handleChange = (event) => {
     let entry = {...this.state.entry};
-    entry[event.target.id] = event.target.value;    
-    console.log(this.state)    
+    entry[event.target.id] = event.target.value;
     this.setState({ entry: entry}); 
   }
   handleAdd = () => {    

@@ -19,7 +19,6 @@ export default class Home extends Component {
         }
     }
     componentDidMount = () => {
-        console.log(localStorage.getItem('username'));
         //fetch questionnaire ids names and refs, set state
         let config = {
             method: 'post',
@@ -36,8 +35,7 @@ export default class Home extends Component {
                         alert("Unable to fetch questionnaire list.");
                     }
                     else {
-                        response.json().then(json => {
-                        console.log("zomg!!!!");
+                        response.json().then(json => {                       
                         this.setState({myQuestionnaires: json });
                       });                  
                     }
@@ -77,7 +75,6 @@ export default class Home extends Component {
                             alert("Unable to save Questionnaire");
                         }
                         else {
-                            console.log(response)
                           response.json().then(json => {
                               // server returns questionnaire minus entries,
                               // so we can optimistically update state
