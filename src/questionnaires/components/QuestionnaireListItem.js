@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 export default class QuestionnaireListItem extends Component {
+    preview = () => {
+        this.props.preview(this.props.questionnaire.id);
+    }
     render() {
         return (
            <tr>            
@@ -8,10 +11,14 @@ export default class QuestionnaireListItem extends Component {
             <td>{this.props.questionnaire.reference}</td>
             <td><button style={{
                 padding: '10px',
-                backgroundColor: '#62DFF8'}}>View</button></td>
-                <td><button style={{
-                    padding: '10px',
-                    backgroundColor: '#62DFF8'}}>Edit</button></td>            
+                backgroundColor: '#62DFF8'}}
+                onClick={this.preview}>Preview</button></td>
+            <td><button style={{
+                padding: '10px',
+                backgroundColor: '#62DFF8'}}>Edit</button></td>
+            <td><button style={{
+                padding: '10px',
+                backgroundColor: '#62DFF8'}}>Delete</button></td> 
             </tr>
         )
     }

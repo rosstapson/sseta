@@ -5,7 +5,8 @@ export default class QuestContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            result: []
+            result: [],
+            questionnaire: this.props.questionnaire
         }
     }
     handleSubmit = () => {
@@ -25,8 +26,10 @@ export default class QuestContainer extends Component {
                 justifyContent: 'center',
                 
             }}>
-            <h1 className="App-intro">3-Month Questionnaire</h1><br/><br/><br/>
-            <QuestionnaireWidget handleChange={this.handleChange} />
+            <h1 className="App-intro">{this.state.questionnaire.name}</h1><br/><br/><br/>
+            <QuestionnaireWidget                
+                questionnaire={this.state.questionnaire} 
+                handleChange={this.handleChange} />
             <div>
             <button 
                 style={{

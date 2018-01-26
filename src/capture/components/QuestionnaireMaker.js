@@ -11,12 +11,15 @@ export default class Questionnaire extends Component {
         entry: {}
     }
   }
-  handleTitleChange = (event) => {
-    this.setState({ formTitle: event.target.value})
+  handleMetaChange = (event) => {
+    let tempState = {...this.state};
+    tempState[event.target.id] = event.target.value;    
+    this.setState(tempState);
   }
   handleChange = (event) => {
     let entry = {...this.state.entry};
-    entry[event.target.id] = event.target.value;        
+    entry[event.target.id] = event.target.value;    
+    console.log(this.state)    
     this.setState({ entry: entry}); 
   }
   handleAdd = () => {    
@@ -70,8 +73,12 @@ export default class Questionnaire extends Component {
       alert("Empty Questionnaire");
       return;
     }
-    let questionnaire = {
-      name: this.state.formTitle,
+    let questionnaire = {      
+      name: this.state.title,
+      reference: this.state.reference,
+      trainingProvider: this.state.trainingProvider,
+      clientCompany: this.state.clientCompany,
+      clientDivision: this.state.clientDivision,
       entries: this.state.formEntries
     }    
     this.props.saveQuestionnaire(questionnaire); 
@@ -87,7 +94,13 @@ export default class Questionnaire extends Component {
   render() {
     return (      
         <div>
-            <div><h3>Questionnaire title/reference:<input type='text' id='title'onChange={this.handleTitleChange}/></h3></div>
+          <table style={{width: '80%'}}><tbody>           
+            <tr><td><h4>Questionnaire name:</h4></td><td><input type='text' id='title'onChange={this.handleMetaChange}/></td></tr>
+            <tr><td><h4>Questionnaire reference:</h4></td><td><input type='text' id='reference'onChange={this.handleMetaChange}/></td></tr>
+            <tr><td><h4>Training provider:</h4></td><td><input type='text' id='trainingProvider'onChange={this.handleMetaChange}/></td></tr>
+            <tr><td><h4>Client Company:</h4></td><td><input type='text' id='clientCompany'onChange={this.handleMetaChange}/></td></tr>
+            <tr><td><h4>Client Division:</h4></td><td><input type='text' id='clientDivision'onChange={this.handleMetaChange}/></td></tr>
+          </tbody></table>
           <table style={{width: '80%'}}><tbody>
             <tr>
               <th>Question:</th>

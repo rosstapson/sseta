@@ -4,21 +4,25 @@ import AnswerWidget from './AnswerWidget';
 export default class QuestionWidget extends Component {
     constructor(props) {
         super(props);
-        // console.log("answer: " + this.props.question.answer)
-        this.state = {
-            id: this.props.question.id,
+        let answer = '3';
+        if (this.props.question.answer) {
+            answer = this.props.question.answer
+        }
+        console.log("answer: " + answer)
+        this.state = {         
             question: this.props.question,
-            answer: this.props.question.answer
-            }
+            answer: answer
         }
-        handleAnswer = (event) => {            
-            let answer = {...this.state};
-            answer.answer = event.target.value;
-            this.props.handleAnswer(answer)
+    }
+        handleAnswer = (event) => {
+            //console.log("on the way up:  " + event.target.value)
+            let state = {...this.state};
+            state.question.answer = event.target.value;
+            this.props.handleAnswer(state.question)
         }
-        componentWillReceiveProps(nextProps) {
-            this.setState({ data: nextProps.data });  
-          }
+        componentWillReceiveProps(nextProps) {                    
+             this.setState({ question: nextProps.question, answer: nextProps.question.answer});  
+        }
         render() {
             return(
                 <div style={{          
@@ -32,7 +36,7 @@ export default class QuestionWidget extends Component {
                         <tbody>
                             <tr>
                                 <td>
-                                {this.state.id}: {this.state.question.question}
+                                {this.state.question.question_text}
                                 </td>
                             </tr>
                             <tr>
@@ -40,9 +44,9 @@ export default class QuestionWidget extends Component {
                                     <AnswerWidget 
                                         handleAnswer={this.handleAnswer} 
                                         question = {this.props.question}                                        
-                                        id={this.props.question.id}
-                                        type = {this.props.question.type}
-                                        answer={this.props.question.answer}/>
+                                        id={this.state.id}
+                                        type = {this.state.type}
+                                        answer={this.state.answer}/>
                                 </td>
                             </tr>
                         </tbody>

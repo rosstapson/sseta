@@ -10,7 +10,7 @@ import img5 from './img/5.png';
 export default class AnswerWidget extends Component {    
     
     render() {
-        if (this.props.type === "text") {
+        if (this.props.type === "Text") {
             return(
                 <div style={{paddingBottom: '40px'}}><input type="text" onChange={this.props.handleAnswer} /></div>
             )
@@ -24,8 +24,6 @@ export default class AnswerWidget extends Component {
                     justifyContent: 'center',
                     paddingBottom: '40px' 
                 }}>
-                   
-                        
                     <label>
                         <input 
                             type="radio" value="1" 

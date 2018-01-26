@@ -14,7 +14,8 @@ export default class Home extends Component {
             showTakeQuestionnaire:false,
             showCapture: false,
             showMyQuestionnaires: false,
-            myQuestionnaires: []
+            myQuestionnaires: [],
+            previewQuestionnaire: {}
         }
     }
     componentDidMount = () => {
@@ -78,10 +79,13 @@ export default class Home extends Component {
                         else {
                             console.log(response)
                           response.json().then(json => {
-                              // the json isn't terribly important, unless we decide to display it 
-                              // straight away.
+                              // server returns questionnaire minus entries,
+                              // so we can optimistically update state
+                              
                             alert("Questionnaire saved");
-                            this.setState({showCapture: false});
+                            let myQuestionnaires = this.state.myQuestionnaires.slice();
+                            myQuestionnaires.push(json.questionnaire)
+                            this.setState({showCapture: false, myQuestionnaires: myQuestionnaires});
                           });                  
                         }
                     });
@@ -90,6 +94,41 @@ export default class Home extends Component {
             catch(err) {
                 alert(err);
             }
+    }
+    preview = (id) => {
+        
+        let config = {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({id: id, token: localStorage.getItem("token")})
+            
+        }
+        try {
+            return fetch(API_ROOT + "/get_questionnaire", config)
+                .then(response =>
+                    {
+                        if (!response.ok) {
+                            alert("Unable to retrieve Questionnaire");
+                            return;
+                        }
+                        else {                          
+                          response.json().then(json => {
+                              // server returns questionnaire
+                            this.setState({
+                                previewQuestionnaire: json,
+                                showCapture: false,
+                                showMyQuestionnaires: false,
+                                showTakeQuestionnaire: true});
+                          });                  
+                        }
+                    });
+                
+            }
+            catch(err) {
+                alert(err);
+            }        
     }
     
     render() {
@@ -124,7 +163,11 @@ export default class Home extends Component {
                     width: "50%",
                     alignSelf: "center"}} >
                 {this.state.showMyQuestionnaires &&
-                    <QuestionnaireList questionnaires={this.state.myQuestionnaires}/>
+                    <QuestionnaireList 
+                        questionnaires={this.state.myQuestionnaires}
+                        closeMe={this.toggleQuestionnaireList}
+                        preview={this.preview}
+                    />
                 }
                 {!this.state.showMyQuestionnaires &&
                     <button 
@@ -136,8 +179,9 @@ export default class Home extends Component {
                 }
                 </div>
                 {this.state.showTakeQuestionnaire &&
-                    <QuestContainer 
-                        questionnaireId={'5a61f38e686f75338fa868b0'}
+                    <QuestContainer
+                        isPreview={'yes'}
+                        questionnaire={this.state.previewQuestionnaire}
                         handleCancel={this.toggleQuestionnaire}
                         handleSubmit={this.handleSubmit}
                     />
