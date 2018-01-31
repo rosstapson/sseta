@@ -1,51 +1,37 @@
 import React, { Component } from 'react';
-import QuestContainer from './questionnaires/containers/QuestContainer';
+//import QuestContainer from './questionnaires/containers/QuestContainer';
 import QuestionnaireList from './questionnaires/containers/QuestionnaireList';
 import CaptureContainer from './capture/containers/CaptureContainer';
+import UserContainer from './users/containers/UserContainer';
 import './App.css';
 import { API_ROOT } from './config';
+import jwt from 'jsonwebtoken';
+import './components.css';
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
+        let token = localStorage.getItem("token");
+        let role = jwt.decode(token).role;
+        // console.log(role);        
+        // console.log(role.indexOf('asdf'));
         this.state = {
+            role: role,
             user: this.props.user,
             questionnairePending: false,
             showTakeQuestionnaire:false,
             showCapture: false,
             showMyQuestionnaires: false,
             myQuestionnaires: [],
-            previewQuestionnaire: {}
+            previewQuestionnaire: {},
+            showUsers: false,
+            //role stuff for display
+            isAdmin: role.indexOf('admin'),
+            isTeacher: role.indexOf('teacher'),
+            isLearner: role.indexOf('learner')
         }
     }
-    componentDidMount = () => {
-        //fetch questionnaire ids names and refs, set state
-        let config = {
-            method: 'post',
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify({email: localStorage.getItem("username"), token: localStorage.getItem("token")})
-        }
-        try {
-        return fetch(API_ROOT + "/questionnaire_list", config)
-            .then(response =>
-                {
-                    if (!response.ok) {
-                        alert("Unable to fetch questionnaire list.");
-                    }
-                    else {
-                        response.json().then(json => {                       
-                        this.setState({myQuestionnaires: json });
-                      });                  
-                    }
-                });
-            
-        }
-        catch(err) {
-            alert(err);
-        }
-    }
+    
     toggleQuestionnaire = () => {
         this.setState({
             //questionnairePending: !this.state.questionnairePending,
@@ -57,6 +43,9 @@ export default class Home extends Component {
     }
     toggleCapture = () => {
         this.setState({ showCapture: !this.state.showCapture})
+    }
+    toggleUsers = () => {
+        this.setState({showUsers: !this.state.showUsers})
     }
     saveQuestionnaire = (questionnaire) => {
         let config = {
@@ -92,50 +81,15 @@ export default class Home extends Component {
                 alert(err);
             }
     }
-    preview = (id) => {
-        
-        let config = {
-            method: 'post',
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify({id: id, token: localStorage.getItem("token")})
-            
-        }
-        try {
-            return fetch(API_ROOT + "/get_questionnaire", config)
-                .then(response =>
-                    {
-                        if (!response.ok) {
-                            alert("Unable to retrieve Questionnaire");
-                            return;
-                        }
-                        else {                          
-                          response.json().then(json => {
-                              // server returns questionnaire
-                            this.setState({
-                                previewQuestionnaire: json,
-                                showCapture: false,
-                                showMyQuestionnaires: false,
-                                showTakeQuestionnaire: true});
-                          });                  
-                        }
-                    });
-                
-            }
-            catch(err) {
-                alert(err);
-            }        
-    }
+    
     
     render() {
         return(
-            <div style={{                
+            <div style={{
                 display: 'flex',
-                flex: '1',
                 flexDirection: 'column',
-                justifyContent: 'center'
-              }}>
+                alignItems: 'center'
+            }}>
                 <h1 className="App-intro">Welcome back</h1><br/>
                 {this.state.questionnairePending &&
                 <div style={{
@@ -159,14 +113,14 @@ export default class Home extends Component {
                     padding: '10px',
                     width: "50%",
                     alignSelf: "center"}} >
-                {this.state.showMyQuestionnaires &&
+                {this.state.showMyQuestionnaires && this.state.isAdmin &&
                     <QuestionnaireList 
                         questionnaires={this.state.myQuestionnaires}
                         closeMe={this.toggleQuestionnaireList}
                         preview={this.preview}
                     />
                 }
-                {!this.state.showMyQuestionnaires &&
+                {this.state.isAdmin &&
                     <button 
                     style={{
                         padding: '10px',
@@ -175,32 +129,42 @@ export default class Home extends Component {
                     onClick={this.toggleQuestionnaireList}>See my questionnaires</button>
                 }
                 </div>
-                {this.state.showTakeQuestionnaire &&
-                    <QuestContainer
-                        isPreview={'yes'}
-                        questionnaire={this.state.previewQuestionnaire}
-                        handleCancel={this.toggleQuestionnaire}
-                        handleSubmit={this.handleSubmit}
-                    />
-                }
+                
                 <div style={{
                     borderStyle: "solid",
                     borderColor: '#62DFF8', 
                     padding: '10px',
                     width: "50%",
                     alignSelf: "center"}}>
-                {!this.state.showCapture &&
+                {!this.state.showCapture && this.state.isAdmin &&
                     <button style={{
                         padding: '10px',
                         backgroundColor: '#62DFF8'
                     }}
                     onClick={this.toggleCapture}>Capture Questionnaire</button>
                 }
-                {this.state.showCapture && 
+                {this.state.showCapture && this.state.isAdmin &&
                     <CaptureContainer
                         saveQuestionnaire={this.saveQuestionnaire}
                         handleCancel={this.toggleCapture} 
                     />
+                }
+                </div>
+                <div style={{
+                    borderStyle: "solid",
+                    borderColor: '#62DFF8', 
+                    padding: '10px',
+                    width: "50%",
+                    alignSelf: "center"}}>
+                {!this.state.showUsers &&
+                    <button style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.toggleUsers}>Users</button>
+                }
+                {this.state.showUsers && 
+                    <UserContainer />
                 }
                 </div>
                 <br/><br/>

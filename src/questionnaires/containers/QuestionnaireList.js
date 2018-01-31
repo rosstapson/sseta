@@ -1,37 +1,141 @@
 import React, { Component } from 'react';
 import QuestionnaireListItem from '../components/QuestionnaireListItem';
+import QuestContainer from './QuestContainer';
+import {API_ROOT} from '../../config';
+//import {getMyQuestionnaires} from '../api';
 
 export default class QuestionnaireList extends Component {
     constructor(props) {
         super(props);
         this.state={
-            questionnaires: this.props.questionnaires
+            questionnaires: this.props.questionnaires,
+            showList: this.props.showList,
+            previewQuestionnaire: '',
+            showTakeQuestionnaire: false
         }
+    }
+
+    showList = () => {        
+        try {
+            let config = {
+                method: 'post',
+                headers: {
+                  'content-type': 'application/json'
+                },
+                body: JSON.stringify({email: localStorage.getItem("username"), token: localStorage.getItem("token")})
+              }
+              return fetch(API_ROOT + "/questionnaire_list", config)
+                .then(response => response.json().then(json => ({json, response})))
+                .then(({json, response}) => {
+                  if (!response.ok) {
+                    throw new Error("zomg")
+                  }
+                  this.setState({questionnaires: json, showList: true})
+                });
+            
+                      
+        }
+        catch(err) {
+            alert(err.message);
+        } 
+    }
+
+    preview = (id) => {        
+        let config = {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({id: id, token: localStorage.getItem("token")})
+            
+        }
+        try {
+            return fetch(API_ROOT + "/get_questionnaire", config)
+                .then(response =>
+                    {
+                        if (!response.ok) {
+                            alert("Unable to retrieve Questionnaire");
+                            return;
+                        }
+                        else {                          
+                          response.json().then(json => {
+                              // server returns questionnaire
+                            this.setState({
+                                previewQuestionnaire: json,                                
+                                showList: false,
+                                showTakeQuestionnaire: true});
+                          });                  
+                        }
+                    });
+                
+            }
+            catch(err) {
+                alert(err);
+            }        
+    }
+   
+    toggleDisplay = () => {
+        this.setState({showList: !this.state.showList})
+    }
+    handleCancel = () => {
+        this.setState({
+            showTakeQuestionnaire: false,
+            showList: true
+        })
     }
     
     render() {
-        return(
-            
-            <div><table><tbody>
-            <tr >
-            <th style={{padding: '10px'}}>Title</th>
-            <th style={{padding: '10px'}}>Reference</th><td></td>
-            <th style={{padding: '10px'}}>Actions</th><td></td>
-            </tr>
-            {this.state.questionnaires.map(questionnaire => {
-                return <QuestionnaireListItem
-                    key={questionnaire.id}
-                    questionnaire={questionnaire}
-                    preview={this.props.preview}
-                />
-            })}
-            </tbody></table><br/><br/>
-            <button style={{
-                padding: '10px',
-                backgroundColor: '#62DFF8'}}
-                onClick={this.props.closeMe}
-                >Close</button>
-            </div>
-        )
+        console.log("render")
+        if (this.state.showList) {
+            return(            
+                <div style={{
+                    borderStyle: "solid",
+                    borderColor: '#62DFF8', 
+                    padding: '10px',
+                    width: "50%",
+                    alignSelf: "center"}}><table><tbody>
+                <tr >
+                <th style={{padding: '10px'}}>Title</th>
+                <th style={{padding: '10px'}}>Reference</th><td></td>
+                <th style={{padding: '10px'}}>Actions</th><td></td>
+                </tr>
+                {this.state.questionnaires.map(questionnaire => {
+                    return <QuestionnaireListItem
+                        key={questionnaire.id}
+                        questionnaire={questionnaire}
+                        preview={this.preview}
+                    />
+                })}
+                </tbody></table><br/><br/>
+                <button style={{
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'}}
+                    onClick={this.toggleDisplay}
+                    >Close</button>
+                </div>
+            )
+        }
+        else {
+            console.log("else")
+            if (this.state.showTakeQuestionnaire) {
+
+                console.log("zomg");
+                return(
+                    <QuestContainer
+                        isPreview={'yes'}
+                        questionnaire={this.state.previewQuestionnaire}
+                        handleCancel={this.handleCancel}
+                    />
+                )
+            } else {
+                return(
+                    <div><button style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.showList}>My Questionnaires</button></div>
+                )
+            }
+        }
     }
 }
