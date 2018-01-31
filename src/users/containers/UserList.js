@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserListItem from '../components/UserListItem';
 
 import { API_ROOT} from '../../config';
 
@@ -24,14 +25,20 @@ export default class UserList extends Component {
                   if (!response.ok) {
                     throw new Error("zomg")
                   }
+                  console.log("zomg")
+                  console.log(json);
                   this.setState({users: json, showList: true})
-                });
-            
-                      
+                }); 
         }
         catch(err) {
             alert(err.message);
         } 
+    }
+    hideMe = () => {
+        this.setState({showList: false})
+    }
+    viewUser = (id) => {
+        
     }
     render() {
         if (this.state.showList) {
@@ -42,7 +49,27 @@ export default class UserList extends Component {
                     padding: '10px',
                     width: "50%",
                     alignSelf: "center"}}>
-                    <h2>User List</h2>
+                    <table><tbody>
+                <tr >
+                <th style={{padding: '10px'}}>Name</th>
+                <th style={{padding: '10px'}}>Email</th>
+                <th style={{padding: '10px'}}>Company</th><td></td>
+                <th style={{padding: '10px'}}>Actions</th>
+                </tr>
+                {this.state.users.map(user => {
+                    return <UserListItem
+                        key={user.id}
+                        user={user}
+                        view={this.viewUser}
+                    />
+                })}
+                </tbody></table><br/><br/>
+                <button style={{
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'}}
+                    onClick={this.hideMe}
+                    >Close</button>
+                
                 </div>
             )
         }

@@ -93,7 +93,8 @@ export default class QuestionnaireList extends Component {
                     borderColor: '#62DFF8', 
                     padding: '10px',
                     width: "50%",
-                    alignSelf: "center"}}><table><tbody>
+                    alignSelf: "center"}}>
+                <table><tbody>
                 <tr >
                 <th style={{padding: '10px'}}>Title</th>
                 <th style={{padding: '10px'}}>Reference</th><td></td>
