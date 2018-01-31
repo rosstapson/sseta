@@ -36,7 +36,7 @@ export default class UserList extends Component {
                   let index = array.findIndex(users, (entry) => {
                       return entry.id === user.id;                      
                   });
-                  users.splice(index, 1, user);                  
+                  users.splice(index, 1, user);
                   console.log(users)
                   //then
                   this.setState({users: users, showList: true, showEdit: false})

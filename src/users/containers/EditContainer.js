@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
 import SelectCountry from '../../common/SelectCountry';
+import CheckBoxGroup from '../../common/CheckBoxGroup';
+import {ROLES} from '../../config';
 
 export default class EditContainer extends Component {
     constructor(props) {
         super(props);
+        let roleString = this.props.user.role;
+        let roles = [];
+        ROLES.forEach((role) => {
+            if (roleString.indexOf(role) > -1) {
+                roles.push({label: role, checked: true});
+            }
+            else {
+                roles.push({label: role});
+            }
+        });
+        // turn the role string in to an array on name: boo
         this.state = {
-            user: this.props.user
+            user: this.props.user,
+            roles: roles
         }
     }
     handleChange = (event) => {        
         let user = {...this.state.user};        
         user[event.target.id] = event.target.value;        
         this.setState({ user: user});        
+    }
+    handleBoxChecked = (entries) => {
+        this.setState(
+            {roles: entries}
+        )
     }
     handleSubmit = () => {
         this.props.handleSubmit(this.state.user);
@@ -92,11 +111,10 @@ export default class EditContainer extends Component {
                     </tr>
                     <tr>
                         <td><h4>Roles:</h4></td>
-                        <td><input 
-                        placeholder="Roles" 
-                        id="role"
-                        defaultValue={this.state.user.role}
-                        onChange={this.handleChange}
+                        <td><CheckBoxGroup                         
+                            id="role"
+                            entries={this.state.roles}
+                            handleBoxChecked={this.handleBoxChecked}
                         /></td>
                     </tr>
                 </tbody>
