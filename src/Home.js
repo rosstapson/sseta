@@ -106,30 +106,10 @@ export default class Home extends Component {
                         backgroundColor: '#62DFF8'
                     }}
                     onClick={this.toggleQuestionnaire}>Go to questionnaire</button></div>
-                }
-                <div style={{
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    alignSelf: "center"}} >
-                {this.state.showMyQuestionnaires && this.state.isAdmin &&
-                    <QuestionnaireList 
-                        questionnaires={this.state.myQuestionnaires}
-                        closeMe={this.toggleQuestionnaireList}
-                        preview={this.preview}
-                    />
-                }
+                }                
                 {this.state.isAdmin &&
-                    <button 
-                    style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.toggleQuestionnaireList}>See my questionnaires</button>
+                    <QuestionnaireList />
                 }
-                </div>
-                
                 <div style={{
                     borderStyle: "solid",
                     borderColor: '#62DFF8', 

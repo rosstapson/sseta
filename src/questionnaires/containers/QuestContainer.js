@@ -5,12 +5,16 @@ export default class QuestContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isPreview: this.props.isPreview,
             result: [],
             questionnaire: this.props.questionnaire
         }
     }
     handleSubmit = () => {
-        alert("Submitted");
+        if (this.state.isPreview) {
+            alert("Submit (Preview)");
+        }
+        
     }
     handleChange = (event) => {       
         let result = {...this.state.result};        

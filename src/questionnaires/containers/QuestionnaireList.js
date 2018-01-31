@@ -129,7 +129,12 @@ export default class QuestionnaireList extends Component {
                 )
             } else {
                 return(
-                    <div><button style={{
+                    <div style={{
+                        borderStyle: "solid",
+                        borderColor: '#62DFF8', 
+                        padding: '10px',
+                        width: "50%",
+                        alignSelf: "center"}}><button style={{
                         padding: '10px',
                         backgroundColor: '#62DFF8'
                     }}
