@@ -43,11 +43,15 @@ class App extends Component {
                 else {
                   response.json().then(json => {                                  
                     localStorage.setItem("username", json.email);
-                    localStorage.setItem("token", json.token)
-                    this.setState({showLogin: false, isLoggedIn: true});
+                    localStorage.setItem("token", json.token);
+                    //console.log(json);
+                    this.setState({showLogin: false, isLoggedIn: true, user: json});
                   });                  
                 }
-            });
+            })
+            .catch(err => {                    
+                alert(err)
+            }); 
         
     }
     catch(err) {

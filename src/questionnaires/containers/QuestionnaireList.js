@@ -31,7 +31,10 @@ export default class QuestionnaireList extends Component {
                     throw new Error("zomg")
                   }
                   this.setState({questionnaires: json, showList: true})
-                });
+                })
+                .catch(err => {                    
+                    alert(err)
+                }); 
             
                       
         }
@@ -85,15 +88,18 @@ export default class QuestionnaireList extends Component {
     }
     
     render() {
-        console.log("render")
         if (this.state.showList) {
             return(            
                 <div style={{
+                    display: 'flex',
+                    flex: '1',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
                     borderStyle: "solid",
                     borderColor: '#62DFF8', 
                     padding: '10px',
                     width: "50%",
-                    alignSelf: "center"}}>
+                    }}>
                 <table><tbody>
                 <tr >
                 <th style={{padding: '10px'}}>Title</th>
@@ -107,17 +113,19 @@ export default class QuestionnaireList extends Component {
                         preview={this.preview}
                     />
                 })}
-                </tbody></table><br/><br/>
+                <br/><br/>
+               <tr><td></td><td>
                 <button style={{
                     padding: '10px',
                     backgroundColor: '#62DFF8'}}
                     onClick={this.toggleDisplay}
                     >Close</button>
+                    </td></tr>
+                </tbody></table>
                 </div>
             )
         }
-        else {
-            console.log("else")
+        else {            
             if (this.state.showTakeQuestionnaire) {
                 return(
                     <QuestContainer

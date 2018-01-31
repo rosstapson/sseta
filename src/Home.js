@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import QuestContainer from './questionnaires/containers/QuestContainer';
 import QuestionnaireList from './questionnaires/containers/QuestionnaireList';
 import CaptureContainer from './capture/containers/CaptureContainer';
+import LearnerContainer from './learner/containers/LearnerContainer';
 import UserList from './users/containers/UserList';
 import './App.css';
 //import { API_ROOT } from './config';
@@ -18,13 +19,8 @@ export default class Home extends Component {
         this.state = {
             role: role,
             user: this.props.user,
-            questionnairePending: false,
+            questionnairePending: true,
             showTakeQuestionnaire:false,
-            showCapture: false,
-            showMyQuestionnaires: false,
-            myQuestionnaires: [],
-            previewQuestionnaire: {},
-            showUsers: false,
             //role stuff for display
             isAdmin: role.indexOf('admin'),
             isTeacher: role.indexOf('teacher'),
@@ -34,18 +30,9 @@ export default class Home extends Component {
     
     toggleQuestionnaire = () => {
         this.setState({
-            //questionnairePending: !this.state.questionnairePending,
+            questionnairePending: !this.state.questionnairePending,
             showTakeQuestionnaire: !this.state.showTakeQuestionnaire
         })
-    }
-    toggleQuestionnaireList = () => {
-        this.setState({ showMyQuestionnaires: !this.state.showMyQuestionnaires})
-    }
-    toggleCapture = () => {
-        this.setState({ showCapture: !this.state.showCapture})
-    }
-    toggleUsers = () => {
-        this.setState({showUsers: !this.state.showUsers})
     }    
     
     render() {
@@ -56,26 +43,10 @@ export default class Home extends Component {
                 alignItems: 'center'
             }}>
                 <h1 className="App-intro">Welcome back</h1><br/>
-                {this.state.questionnairePending &&
-                <div style={{
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    alignSelf: "center"
-                }}>NB! You have 1 questionnaire pending.<br/>Would you like to take it now?
-                <br/><br/><br/><br/>
-                <button 
-                    style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.toggleQuestionnaire}>Go to questionnaire</button></div>
-                }                
+                <LearnerContainer />
                 {this.state.isAdmin &&
                     <QuestionnaireList />
-                }                
-                
+                }
                 {this.state.isAdmin &&
                     <CaptureContainer />
                 }                

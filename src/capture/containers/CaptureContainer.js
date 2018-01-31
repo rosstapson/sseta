@@ -33,7 +33,10 @@ export default class CaptureContainer extends Component {
                             this.setState({showCapture: false, myQuestionnaires: myQuestionnaires});
                           });                  
                         }
-                    });
+                    })
+                    .catch(err => {                    
+                        alert(err)
+                    }); 
                 
             }
             catch(err) {
@@ -43,8 +46,7 @@ export default class CaptureContainer extends Component {
     showMe = () => {
         this.setState({showCapture:true})
     }
-    hideMe = () => {
-        console.log("zomg")
+    hideMe = () => {       
         this.setState({showCapture: false})
     }
     render() {

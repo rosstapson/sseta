@@ -25,9 +25,10 @@ export default class UserList extends Component {
                   if (!response.ok) {
                     throw new Error("zomg")
                   }
-                  console.log("zomg")
-                  console.log(json);
                   this.setState({users: json, showList: true})
+                })
+                .catch(err => {                    
+                    alert(err)
                 }); 
         }
         catch(err) {
@@ -38,17 +39,21 @@ export default class UserList extends Component {
         this.setState({showList: false})
     }
     viewUser = (id) => {
-        
+
     }
     render() {
         if (this.state.showList) {
             return (
                 <div style={{
+                    display: 'flex',
+                    flex: '1',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
                     borderStyle: "solid",
                     borderColor: '#62DFF8', 
                     padding: '10px',
                     width: "50%",
-                    alignSelf: "center"}}>
+                    }}>
                     <table><tbody>
                 <tr >
                 <th style={{padding: '10px'}}>Name</th>
@@ -63,13 +68,15 @@ export default class UserList extends Component {
                         view={this.viewUser}
                     />
                 })}
-                </tbody></table><br/><br/>
+                <br/>
+                <tr><td></td><td colSpan={2}>
                 <button style={{
                     padding: '10px',
                     backgroundColor: '#62DFF8'}}
                     onClick={this.hideMe}
                     >Close</button>
-                
+                    </td></tr>
+                    </tbody></table>
                 </div>
             )
         }
