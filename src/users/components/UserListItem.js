@@ -4,6 +4,7 @@ export default class UserListItem extends Component {
     view = () => {
         this.props.view(this.props.user.id);
     }
+    
     render() {        
         return(
             <tr>            

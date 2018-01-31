@@ -58,6 +58,7 @@ export default class CaptureContainer extends Component {
                     padding: '10px',
                     width: "50%",
                     alignSelf: "center"}}>
+                    <h1 className="App-intro">Capture Questionnaire</h1><br/>
                     <QuestionnaireMaker 
                     saveQuestionnaire={this.saveQuestionnaire}
                     handleCancel={this.hideMe}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserListItem from '../components/UserListItem';
+import UserContainer from './UserContainer';
 
 import { API_ROOT} from '../../config';
 
@@ -7,7 +8,7 @@ export default class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            arb: false
+            showUser: false
         }
     }
     showList = () => {        
@@ -35,12 +36,44 @@ export default class UserList extends Component {
             alert(err.message);
         } 
     }
+    preview = (id) => {        
+        let config = {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({id: id, token: localStorage.getItem("token")})
+            
+        }
+        try {
+            return fetch(API_ROOT + "/user", config)
+                .then(response =>
+                    {
+                        if (!response.ok) {
+                            alert("Unable to retrieve User");
+                            return;
+                        }
+                        else {                          
+                          response.json().then(json => {
+                              // server returns questionnaire
+                            this.setState({
+                                userInQuestion: json,                                
+                                showList: false,
+                                showUser: true
+                            });
+                          });                  
+                        }
+                    });
+                
+            }
+            catch(err) {
+                alert(err);
+            }        
+    }
     hideMe = () => {
-        this.setState({showList: false})
+        this.setState({showList: false, showUser: false})
     }
-    viewUser = (id) => {
-
-    }
+    
     render() {
         if (this.state.showList) {
             return (
@@ -65,10 +98,10 @@ export default class UserList extends Component {
                     return <UserListItem
                         key={user.id}
                         user={user}
-                        view={this.viewUser}
+                        view={this.preview}
                     />
                 })}
-                <br/>
+                
                 <tr><td></td><td colSpan={2}>
                 <button style={{
                     padding: '10px',
@@ -81,18 +114,28 @@ export default class UserList extends Component {
             )
         }
         else {
-            return(
-                <div style={{
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    alignSelf: "center"}}><button style={{
-                    padding: '10px',
-                    backgroundColor: '#62DFF8'
-                }}
-                onClick={this.showList}>Show Users</button></div>
-            )
+            if (this.state.showUser) {
+                return(
+                    <UserContainer 
+                        user={this.state.userInQuestion}
+                        hideMe={this.hideMe}
+                    />
+                )
+            } 
+            else {
+                return(
+                    <div style={{
+                        borderStyle: "solid",
+                        borderColor: '#62DFF8', 
+                        padding: '10px',
+                        width: "50%",
+                        alignSelf: "center"}}><button style={{
+                        padding: '10px',
+                        backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.showList}>Show Users</button></div>
+                )
+            }
         }
     }
 }

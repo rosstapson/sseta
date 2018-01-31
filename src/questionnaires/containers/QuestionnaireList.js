@@ -99,8 +99,9 @@ export default class QuestionnaireList extends Component {
                     borderColor: '#62DFF8', 
                     padding: '10px',
                     width: "50%",
-                    }}>
+                    }}>                    
                 <table><tbody>
+                <tr><td colSpan={4}><h1 className="App-intro">My Questionnaires</h1></td></tr>
                 <tr >
                 <th style={{padding: '10px'}}>Title</th>
                 <th style={{padding: '10px'}}>Reference</th><td></td>
