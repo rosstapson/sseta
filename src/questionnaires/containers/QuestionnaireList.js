@@ -118,8 +118,6 @@ export default class QuestionnaireList extends Component {
         else {
             console.log("else")
             if (this.state.showTakeQuestionnaire) {
-
-                console.log("zomg");
                 return(
                     <QuestContainer
                         isPreview={'yes'}

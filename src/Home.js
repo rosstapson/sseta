@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 //import QuestContainer from './questionnaires/containers/QuestContainer';
 import QuestionnaireList from './questionnaires/containers/QuestionnaireList';
 import CaptureContainer from './capture/containers/CaptureContainer';
-import UserContainer from './users/containers/UserContainer';
+import UserList from './users/containers/UserList';
 import './App.css';
-import { API_ROOT } from './config';
+//import { API_ROOT } from './config';
 import jwt from 'jsonwebtoken';
 import './components.css';
 
@@ -46,42 +46,7 @@ export default class Home extends Component {
     }
     toggleUsers = () => {
         this.setState({showUsers: !this.state.showUsers})
-    }
-    saveQuestionnaire = (questionnaire) => {
-        let config = {
-            method: 'post',
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify({questionnaire: questionnaire, token: localStorage.getItem("token")})
-            
-        }
-        try {
-            return fetch(API_ROOT + "/questionnaires", config)
-                .then(response =>
-                    {
-                        if (!response.ok) {
-                            alert("Unable to save Questionnaire");
-                        }
-                        else {
-                          response.json().then(json => {
-                              // server returns questionnaire minus entries,
-                              // so we can optimistically update state
-                              
-                            alert("Questionnaire saved");
-                            let myQuestionnaires = this.state.myQuestionnaires.slice();
-                            myQuestionnaires.push(json.questionnaire)
-                            this.setState({showCapture: false, myQuestionnaires: myQuestionnaires});
-                          });                  
-                        }
-                    });
-                
-            }
-            catch(err) {
-                alert(err);
-            }
-    }
-    
+    }    
     
     render() {
         return(
@@ -109,44 +74,14 @@ export default class Home extends Component {
                 }                
                 {this.state.isAdmin &&
                     <QuestionnaireList />
-                }
-                <div style={{
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    alignSelf: "center"}}>
-                {!this.state.showCapture && this.state.isAdmin &&
-                    <button style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.toggleCapture}>Capture Questionnaire</button>
-                }
-                {this.state.showCapture && this.state.isAdmin &&
-                    <CaptureContainer
-                        saveQuestionnaire={this.saveQuestionnaire}
-                        handleCancel={this.toggleCapture} 
-                    />
-                }
-                </div>
-                <div style={{
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    alignSelf: "center"}}>
-                {!this.state.showUsers &&
-                    <button style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.toggleUsers}>Users</button>
-                }
-                {this.state.showUsers && 
-                    <UserContainer />
-                }
-                </div>
+                }                
+                
+                {this.state.isAdmin &&
+                    <CaptureContainer />
+                }                
+                {this.state.isAdmin && 
+                    <UserList />
+                }                
                 <br/><br/>
                 <div><a href="https://mysseta.slack.com/messages/C8EHYBB52/">Slack Video Conferencing</a></div>
                 <br/><br/>
