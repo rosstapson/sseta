@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SelectCountry from './SelectCountry';
+import SelectCountry from '../../common/SelectCountry';
 import '../../App.css';
 
 export default class RegisterWidget extends Component {
@@ -42,11 +42,11 @@ export default class RegisterWidget extends Component {
         user.confirmPassword = confirmPassword;
         this.setState({ user: user, passwordValid: valid})
     }
-    handleChange = (event) => {        
-        let user = {...this.state.user};        
-        user[event.target.id] = event.target.value;        
-        this.setState({ user: user});        
-    }
+        handleChange = (event) => {        
+            let user = {...this.state.user};        
+            user[event.target.id] = event.target.value;        
+            this.setState({ user: user});        
+        }
     registerUser = () => {        
         if (!this.state.passwordValid) {
             alert("Passwords Don't Match")

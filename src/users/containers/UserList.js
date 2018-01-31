@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import UserListItem from '../components/UserListItem';
 import UserContainer from './UserContainer';
+import EditContainer from './EditContainer';
+import array from 'lodash/array';
 
 import { API_ROOT} from '../../config';
 
@@ -8,8 +10,44 @@ export default class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showUser: false
+            showUser: false,
+            showEdit: false,
+            users: ''
         }
+    }
+    handleSubmit = (user) => {
+        try {
+            let config = {
+                method: 'post',
+                headers: {
+                  'content-type': 'application/json'
+                },
+                body: JSON.stringify({user: user, token: localStorage.getItem("token")})
+              }
+              return fetch(API_ROOT + "/user_update", config)
+                .then(response => response.json().then(json => ({json, response})))
+                .then(({json, response}) => {
+                  if (!response.ok) {
+                    throw new Error(response.error)
+                  }
+                  //optimistically update state.users
+                  
+                  let users = this.state.users.slice();
+                  let index = array.findIndex(users, (entry) => {
+                      return entry.id === user.id;                      
+                  });
+                  users.splice(index, 1, user);                  
+                  console.log(users)
+                  //then
+                  this.setState({users: users, showList: true, showEdit: false})
+                })
+                .catch(err => {                    
+                    alert(err)
+                }); 
+        }
+        catch(err) {
+            alert(err.message);
+        } 
     }
     showList = () => {        
         try {
@@ -26,6 +64,7 @@ export default class UserList extends Component {
                   if (!response.ok) {
                     throw new Error("zomg")
                   }
+                  //console.log(json)
                   this.setState({users: json, showList: true})
                 })
                 .catch(err => {                    
@@ -70,8 +109,42 @@ export default class UserList extends Component {
                 alert(err);
             }        
     }
+    edit = (id) => {        
+        let config = {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({id: id, token: localStorage.getItem("token")})
+            
+        }
+        try {
+            return fetch(API_ROOT + "/user", config)
+                .then(response =>
+                    {
+                        if (!response.ok) {
+                            alert("Unable to retrieve User");
+                            return;
+                        }
+                        else {                          
+                          response.json().then(json => {
+                              // server returns questionnaire
+                            this.setState({
+                                userInQuestion: json,                                
+                                showList: false,
+                                showEdit: true
+                            });
+                          });                  
+                        }
+                    });
+                
+            }
+            catch(err) {
+                alert(err);
+            }        
+    }
     hideMe = () => {
-        this.setState({showList: false, showUser: false})
+        this.setState({showList: false, showUser: false, showEdit: false })
     }
     
     render() {
@@ -88,6 +161,7 @@ export default class UserList extends Component {
                     width: "50%",
                     }}>
                     <table><tbody>
+                    <tr><td colSpan={4}><h1 className="App-intro">Users</h1></td></tr>
                 <tr >
                 <th style={{padding: '10px'}}>Name</th>
                 <th style={{padding: '10px'}}>Email</th>
@@ -99,6 +173,7 @@ export default class UserList extends Component {
                         key={user.id}
                         user={user}
                         view={this.preview}
+                        edit={this.edit}
                     />
                 })}
                 
@@ -123,18 +198,29 @@ export default class UserList extends Component {
                 )
             } 
             else {
-                return(
-                    <div style={{
-                        borderStyle: "solid",
-                        borderColor: '#62DFF8', 
-                        padding: '10px',
-                        width: "50%",
-                        alignSelf: "center"}}><button style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.showList}>Show Users</button></div>
-                )
+                if (this.state.showEdit) {
+                    return (
+                        <EditContainer
+                            user={this.state.userInQuestion}
+                            hideMe={this.hideMe}
+                            handleSubmit={this.handleSubmit}
+                        />
+                    )
+                }
+                else {
+                    return(
+                        <div style={{
+                            borderStyle: "solid",
+                            borderColor: '#62DFF8', 
+                            padding: '10px',
+                            width: "50%",
+                            alignSelf: "center"}}><button style={{
+                            padding: '10px',
+                            backgroundColor: '#62DFF8'
+                        }}
+                        onClick={this.showList}>Show Users</button></div>
+                    )
+                }
             }
         }
     }
