@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { API_ROOT } from '../../config';
+
 import QuestContainer from '../../questionnaires/containers/QuestContainer';
 
 export default class LearnerContainer extends Component {
@@ -10,8 +12,45 @@ export default class LearnerContainer extends Component {
             pendingQuestionnaires: [15]
         }
     }
-    showQuestionnaire = () => {
-
+    handleCancel = () => {
+        this.setState({
+            showTakeQuestionnaire: false,
+            questionnairePending: true
+        })
+    }
+showQuestionnaire = () => {
+    let config = {
+        method: 'post',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({id: this.state.pendingQuestionnaires[0], token: localStorage.getItem("token")})
+        
+    }
+    try {
+        return fetch(API_ROOT + "/get_questionnaire", config)
+            .then(response =>
+                {
+                    if (!response.ok) {
+                        alert("Unable to retrieve Questionnaire");
+                        return;
+                    }
+                    else {                          
+                        response.json().then(json => {
+                            // server returns questionnaire
+                        this.setState({
+                            questionnaire: json,                                
+                            showList: false,
+                            questionnairePending: false,
+                            showTakeQuestionnaire: true});
+                        });                  
+                    }
+                });
+            
+        }
+        catch(err) {
+            alert(err);
+        }
     }
     render() {
         return(
@@ -28,11 +67,11 @@ export default class LearnerContainer extends Component {
                     padding: '10px',
                     backgroundColor: '#62DFF8'
                 }}
-                onClick={this.showTakeQuestionnaire}>Go to questionnaire</button></div>
+                onClick={this.showQuestionnaire}>Go to questionnaire</button></div>
             }
             {this.state.showTakeQuestionnaire &&
                 <QuestContainer
-                    questionnaire={this.state.previewQuestionnaire}
+                    questionnaire={this.state.questionnaire}
                     handleSubmit={this.handleSubmit}
                     handleCancel={this.handleCancel}
                 />
