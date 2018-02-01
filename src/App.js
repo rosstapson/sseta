@@ -15,13 +15,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     let isLoggedIn = localStorage.getItem("token");
-    let isAdmin = false;
+    //let isAdmin = false;
     if (isLoggedIn === "isAdmin") {
-      isAdmin = true;
+      localStorage.setItem("isAdmin", true);
     }
     this.state = {
       isLoggedIn: isLoggedIn,
-      isAdmin: isAdmin,
+      //isAdmin: isAdmin,
       showLogin: true
     }
   }
@@ -41,10 +41,12 @@ class App extends Component {
                     alert("Invalid credentials");
                 }
                 else {
-                  response.json().then(json => {                                  
+                  response.json().then(json => {
+                    console.log(json.id)
                     localStorage.setItem("username", json.email);
+                    localStorage.setItem("id", json.id);
                     localStorage.setItem("token", json.token);
-                    this.setState({showLogin: false, isLoggedIn: true, user: json});
+                    this.setState({showLogin: false, isLoggedIn: true, user: json, user_id: json.id});                   
                   });                  
                 }
             })
@@ -60,9 +62,12 @@ class App extends Component {
   handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("isLearner");
+    localStorage.removeItem("isTeacher");
+    localStorage.removeItem("isManager");
     this.setState({
       isLoggedIn: false,
-      isAdmin: false,
       showLogin: true
     });
   }

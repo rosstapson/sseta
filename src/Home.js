@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import QuestionnaireList from './questionnaires/containers/QuestionnaireList';
 import CaptureContainer from './capture/containers/CaptureContainer';
 import LearnerContainer from './learner/containers/LearnerContainer';
+import ScheduleContainer from './schedule/containers/ScheduleContainer';
 import UserList from './users/containers/UserList';
 import './App.css';
 //import { API_ROOT } from './config';
@@ -14,15 +15,24 @@ export default class Home extends Component {
         super(props);
         let token = localStorage.getItem("token");
         let role = jwt.decode(token).role;
+        // isAdmin: role.indexOf('admin'),
+        // isTeacher: role.indexOf('teacher'),
+        // isLearner: role.indexOf('learner')
+        if (role.indexOf('admin') > -1) {
+            localStorage.setItem("isAdmin", true);
+        }
+        if (role.indexOf('teacher') > -1) {
+            localStorage.setItem("isTeacher", true);
+        }
+        if (role.indexOf('learner') > -1) {
+            localStorage.setItem("isLearner", true);
+        }
         this.state = {
             role: role,
             user: this.props.user,
             questionnairePending: true,
             showTakeQuestionnaire:false,
-            //role stuff for display
-            isAdmin: role.indexOf('admin'),
-            isTeacher: role.indexOf('teacher'),
-            isLearner: role.indexOf('learner')
+            //role stuff for display            
         }
     }
     
@@ -38,17 +48,21 @@ export default class Home extends Component {
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
+               
                 alignItems: 'center'
             }}>
                 <h1 className="App-intro">Welcome back</h1><br/>
+                <ScheduleContainer 
+                    id={localStorage.getItem("id")}
+                />
                 <LearnerContainer />
-                {this.state.isAdmin &&
+                {localStorage.getItem("isAdmin") &&
                     <QuestionnaireList />
                 }
-                {this.state.isAdmin &&
+                {localStorage.getItem("isAdmin") &&
                     <CaptureContainer />
                 }                
-                {this.state.isAdmin && 
+                {localStorage.getItem("isAdmin") && 
                     <UserList />
                 }                
                 <br/><br/>

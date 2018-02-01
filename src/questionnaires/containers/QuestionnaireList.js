@@ -114,8 +114,8 @@ export default class QuestionnaireList extends Component {
                         preview={this.preview}
                     />
                 })}
-                <br/><br/>
-               <tr><td></td><td>
+                <tr><td></td><td></td></tr>
+                <tr><td></td><td>
                 <button style={{
                     padding: '10px',
                     backgroundColor: '#62DFF8'}}
