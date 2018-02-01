@@ -1,0 +1,8 @@
+
+.box {
+    display: flex -webkit-flex;  
+    flex-direction: 'row';    
+    align-items: 'center';
+    background-color: brown;
+  }
+  
