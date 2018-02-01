@@ -14,8 +14,6 @@ export default class Home extends Component {
         super(props);
         let token = localStorage.getItem("token");
         let role = jwt.decode(token).role;
-        // console.log(role);        
-        // console.log(role.indexOf('asdf'));
         this.state = {
             role: role,
             user: this.props.user,

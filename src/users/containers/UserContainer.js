@@ -3,9 +3,6 @@ import React, { Component } from 'react';
 export default class UserContainer extends Component {
     
     render() {
-        alert(this.props.user.role);
-        // let role = JSON.parse(this.props.user.role);
-        // console.log(role);
         return(
         <div style={{                
             display: 'flex',

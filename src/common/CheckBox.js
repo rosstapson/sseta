@@ -4,14 +4,15 @@ export default class CheckBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: this.props.checked
+            checked: this.props.checked,
+            label: this.props.label
         }        
     }
     toggleCheckboxChange = () => {
-        this.setState({
-            checked: !this.state.checked
-        })
-        this.props.handleBoxChecked({label: this.props.lable, checked: this.state.checked});
+        // this.setState({
+        //     checked: !this.state.checked
+        // })
+        this.props.handleBoxChecked({label: this.state.label, checked: !this.state.checked});
     }
     render() {
         return (
@@ -19,13 +20,13 @@ export default class CheckBox extends Component {
                 <label>
                     <input
                     type="checkbox"
-                    value={this.props.label}
+                    value={this.state.label}
                     checked={this.state.checked}
                     onChange={this.toggleCheckboxChange}
                     />
             </label>
             </td><td>
-            {this.props.label}
+            {this.state.label}
             </td></tr>
             
         )

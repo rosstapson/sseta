@@ -18,13 +18,11 @@ export default class QuestionnaireWidget extends Component {
     }
     handleAnswer = (answer) => {        
         let questionnaire = {...this.state.questionnaire};
-        //console.log(questionnaire)
         questionnaire.formEntries.forEach(question => {            
             if (question.id === answer.id) {
                 question.answer = answer.answer;
             }
         })
-        //console.log(questionnaire)
         this.setState({questionnaire: questionnaire});        
     }
     

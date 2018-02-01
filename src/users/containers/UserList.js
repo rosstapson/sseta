@@ -37,8 +37,6 @@ export default class UserList extends Component {
                       return entry.id === user.id;                      
                   });
                   users.splice(index, 1, user);
-                  console.log(users)
-                  //then
                   this.setState({users: users, showList: true, showEdit: false})
                 })
                 .catch(err => {                    
@@ -64,7 +62,6 @@ export default class UserList extends Component {
                   if (!response.ok) {
                     throw new Error("zomg")
                   }
-                  //console.log(json)
                   this.setState({users: json, showList: true})
                 })
                 .catch(err => {                    

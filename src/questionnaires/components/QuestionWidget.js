@@ -3,15 +3,13 @@ import AnswerWidget from './AnswerWidget';
 
 export default class QuestionWidget extends Component {
     constructor(props) {
-        super(props);
-        //console.log("answer: " + answer)
+        super(props);        
         this.state = {         
             question: this.props.question,
             answer: this.props.question.answer
         }
     }
         handleAnswer = (event) => {
-            //console.log("on the way up:  " + event.target.value)
             let state = {...this.state};
             state.question.answer = event.target.value;
             this.props.handleAnswer(state.question)

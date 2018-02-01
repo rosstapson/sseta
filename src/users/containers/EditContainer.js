@@ -16,7 +16,6 @@ export default class EditContainer extends Component {
                 roles.push({label: role});
             }
         });
-        // turn the role string in to an array on name: boo
         this.state = {
             user: this.props.user,
             roles: roles
@@ -27,13 +26,22 @@ export default class EditContainer extends Component {
         user[event.target.id] = event.target.value;        
         this.setState({ user: user});        
     }
-    handleBoxChecked = (entries) => {
+    handleBoxChecked = (entries) => {        
         this.setState(
             {roles: entries}
         )
     }
     handleSubmit = () => {
-        this.props.handleSubmit(this.state.user);
+        let user = {...this.state.user};
+        let role = '';
+        this.state.roles.entries.forEach((entry) => {
+            if(entry.checked) {
+                role+=entry.label + ",";
+            }
+        });
+        user.role = role;
+        console.log(role);
+        this.props.handleSubmit(user);
     }
     render() {
         return (
