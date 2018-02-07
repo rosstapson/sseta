@@ -10,12 +10,15 @@ import {
 import Login from './auth/containers/Login';
 import RegisterWidget from './auth/components/RegisterWidget';
 import Home from './Home';
+//import jwt from 'jsonwebtoken';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    let isLoggedIn = localStorage.getItem("token");
+    // check token ("/get_token")
     //let isAdmin = false;
+    let isLoggedIn = this.checkToken();
+    
     if (isLoggedIn === "isAdmin") {
       localStorage.setItem("isAdmin", true);
     }
@@ -25,7 +28,7 @@ class App extends Component {
       showLogin: true
     }
   }
-  handleLogin = (user) => {    
+  handleLogin = (user) => {
     let config = {
         method: 'post',
         headers: {
@@ -42,7 +45,7 @@ class App extends Component {
                 }
                 else {
                   response.json().then(json => {
-                    console.log(json.id)
+                    //console.log(json.id)
                     localStorage.setItem("username", json.email);
                     localStorage.setItem("id", json.id);
                     localStorage.setItem("token", json.token);
@@ -59,6 +62,37 @@ class App extends Component {
         alert(err);
     }
   }
+  checkToken = () => {
+    let config = {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({token: localStorage.getItem('token')})
+    }
+    try {
+    fetch(API_ROOT + "/check_token", config)
+        .then(response =>
+            {
+                if (!response.ok) {
+                    //alert("Invalid credentials");
+                    return false;
+                }
+                else {
+                  return "valid token";
+                }
+            })
+            .catch(err => {                    
+                //this.handleLogout();
+                return false;
+            });
+            
+        
+    }
+    catch(err) {
+        alert(err);
+    }
+  }
   handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
@@ -66,6 +100,7 @@ class App extends Component {
     localStorage.removeItem("isLearner");
     localStorage.removeItem("isTeacher");
     localStorage.removeItem("isManager");
+    localStorage.removeItem("id");
     this.setState({
       isLoggedIn: false,
       showLogin: true
