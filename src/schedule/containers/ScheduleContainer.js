@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import cuid from 'cuid';
-import ScheduleItem from '../components/ScheduleItem';
+//import cuid from 'cuid';
+//import ScheduleItem from '../components/ScheduleItem';
+import EventScheduler from '../components/EventScheduler';
+import Schedule from '../components/Schedule';
 
 import { API_ROOT } from '../../config';
 
@@ -8,14 +10,19 @@ export default class ScheduleContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showSchedule: false,
+            showMySchedule: false,
+            showScheduleEvent: false,
             id: this.props.id
         }
     }
     hideMe = () => {
-        this.setState({showSchedule: false})
+        this.setState({showMySchedule: false, showScheduleEvent: false})
     }
-    showSchedule = () => {
+    handleSubmit = (scheduleEntries) => { //scheduleEntries will be {entries: [{user_id, event_type, date_time, e}]}
+        alert('submitted');
+        this.setState({showMySchedule: false, showScheduleEvent: false})
+    }
+    showMySchedule = () => {
         let config = {
             method: 'post',
             headers: {
@@ -35,7 +42,7 @@ export default class ScheduleContainer extends Component {
                         else {                          
                           response.json().then(json => {
                               //console.log(json)
-                            this.setState({ showSchedule: true , events: json});
+                            this.setState({ showMySchedule: true , events: json});
                           });                  
                         }
                     });
@@ -43,63 +50,69 @@ export default class ScheduleContainer extends Component {
             }
             catch(err) {
                 alert(err);
-            }        
-        
+            }
+    }
+    showScheduleEvent = () => {
+        try {
+            let config = {
+                method: 'post',
+                headers: {
+                  'content-type': 'application/json'
+                },
+                body: JSON.stringify({email: localStorage.getItem("email"), token: localStorage.getItem("token")})
+              }
+              return fetch(API_ROOT + "/user_list", config)
+                .then(response => response.json().then(json => ({json, response})))
+                .then(({json, response}) => {
+                  if (!response.ok) {
+                    throw new Error("Unable to retrieve user list")
+                  }
+                  this.setState({users: json, showScheduleEvent: true})
+                })
+                .catch(err => {                    
+                    alert(err)
+                }); 
+        }
+        catch(err) {
+            alert(err.message);
+        }         
     }
     render() {
-        if (this.state.showSchedule) {
-            return(            
-                <div style={{
-                    display: 'flex',
-                    flex: '1',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    }}>                    
-                <table><tbody>
-                <tr><td colSpan={4}><h1 className="App-intro">My Schedule</h1></td></tr>
-                <tr >
-                <th style={{padding: '10px'}}>Event type</th>
-                <th style={{padding: '10px'}}>Date/Time</th><td></td>
-                <th style={{padding: '10px'}}>Status</th><td></td>
-                </tr>
-                {this.state.events.map(event => {
-                    return <ScheduleItem 
-                        key={cuid()}
-                        eventType={event.event_type}
-                        dateTime={event.date_time}
-                        status={event.status}
-                    />
-                })}
-                <tr><td></td></tr>
-               <tr><td></td><td>
+        return(
+            <div style={{
+                borderStyle: "solid",
+                borderColor: '#62DFF8', 
+                padding: '10px',
+                width: "50%",
+                alignSelf: "center"}}>
+            {this.state.showMySchedule &&
+                <Schedule 
+                    events={this.state.events}
+                    hideMe={this.hideMe}
+                />
+            }
+            {this.state.showScheduleEvent &&
+                <EventScheduler
+                    users={this.state.users}
+                    hideMe={this.hideMe}
+                    handleSubmit={this.handleSubmit}
+                />
+            }
+            {!this.state.showScheduleEvent && !this.state.showMySchedule &&
                 <button style={{
-                    padding: '10px',
-                    backgroundColor: '#62DFF8'}}
-                    onClick={this.hideMe}
-                    >Close</button>
-                    </td></tr>
-                </tbody></table>
-                </div>
-            )
-        }
-        else {
-            return(
-                <div style={{
-                    borderStyle: "solid",
-                    borderColor: '#62DFF8', 
-                    padding: '10px',
-                    width: "50%",
-                    alignSelf: "center"}}><button style={{
                     padding: '10px',
                     backgroundColor: '#62DFF8'
                 }}
-                onClick={this.showSchedule}>My Schedule</button></div>
-            )
-        }
-        
+                onClick={this.showMySchedule}>My Schedule</button>
+            }
+            {localStorage.getItem('isAdmin') && !this.state.showScheduleEvent && !this.state.showMySchedule &&
+                <button style={{
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'
+                }}
+                onClick={this.showScheduleEvent}>Schedule an Event</button>
+            }
+            </div>
+        )
     }
 }

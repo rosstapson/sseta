@@ -14,18 +14,21 @@ import Home from './Home';
 
 class App extends Component {
   constructor(props) {
-    super(props);
-    // check token ("/get_token")
-    //let isAdmin = false;
-    let isLoggedIn = this.checkToken();
-    
-    if (isLoggedIn === "isAdmin") {
-      localStorage.setItem("isAdmin", true);
-    }
+    super(props); 
     this.state = {
-      isLoggedIn: isLoggedIn,
+      isLoggedIn: false,
       //isAdmin: isAdmin,
       showLogin: true
+    }
+  }
+  async componentDidMount() {
+    let isLoggedIn = await this.checkToken();
+    //console.log('componentDidMount: ' + isLoggedIn)
+    if (isLoggedIn) {
+      this.setState({isLoggedIn});
+    }
+    else {
+      this.handleLogout();
     }
   }
   handleLogin = (user) => {
@@ -46,7 +49,7 @@ class App extends Component {
                 else {
                   response.json().then(json => {
                     //console.log(json.id)
-                    localStorage.setItem("username", json.email);
+                    localStorage.setItem("email", json.email);
                     localStorage.setItem("id", json.id);
                     localStorage.setItem("token", json.token);
                     this.setState({showLogin: false, isLoggedIn: true, user: json, user_id: json.id});                   
@@ -62,7 +65,7 @@ class App extends Component {
         alert(err);
     }
   }
-  checkToken = () => {
+  checkToken = async() => {
     let config = {
         method: 'post',
         headers: {
@@ -71,30 +74,23 @@ class App extends Component {
         body: JSON.stringify({token: localStorage.getItem('token')})
     }
     try {
-    fetch(API_ROOT + "/check_token", config)
-        .then(response =>
-            {
-                if (!response.ok) {
-                    //alert("Invalid credentials");
-                    return false;
-                }
-                else {
-                  return "valid token";
-                }
-            })
-            .catch(err => {                    
-                //this.handleLogout();
-                return false;
-            });
-            
-        
+      let response = await fetch(API_ROOT + "/check_token", config);
+      if (!response.ok) {
+          //alert("Invalid credentials");
+          console.log("false")
+          return false;
+      }
+      else {
+        console.log("true")
+        return "loggedIn";
+      }
     }
     catch(err) {
         alert(err);
     }
   }
   handleLogout = () => {
-    localStorage.removeItem("username");
+    localStorage.removeItem("email");
     localStorage.removeItem("token");
     localStorage.removeItem("isAdmin");
     localStorage.removeItem("isLearner");

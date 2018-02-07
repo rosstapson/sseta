@@ -22,7 +22,7 @@ export default class QuestionnaireList extends Component {
                 headers: {
                   'content-type': 'application/json'
                 },
-                body: JSON.stringify({email: localStorage.getItem("username"), token: localStorage.getItem("token")})
+                body: JSON.stringify({email: localStorage.getItem("email"), token: localStorage.getItem("token")})
               }
               return fetch(API_ROOT + "/questionnaire_list", config)
                 .then(response => response.json().then(json => ({json, response})))
