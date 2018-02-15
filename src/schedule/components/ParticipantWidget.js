@@ -29,6 +29,7 @@ export default class ParticipantWidget extends Component {
         if (users.length > 0) {
             selected = users[0].id
         }
+        this.props.handleParticipantsChange(participants);
         this.setState({users: users, participants: participants, selected: selected})        
     }
     handleRemove = (event) => {
@@ -41,6 +42,7 @@ export default class ParticipantWidget extends Component {
         participants = participants.filter(entry => {
             return event.target.id !== entry.id
         });
+        this.props.handleParticipantsChange(participants);
         this.setState({users: users, participants: participants, selected: users[0].id})
       }
     render() {

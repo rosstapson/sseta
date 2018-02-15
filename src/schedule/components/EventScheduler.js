@@ -10,10 +10,31 @@ export default class EventScheduler extends Component {
         super(props);
         this.state = {
             users: this.props.users,
-            filteredUsers: '',
-            event: {},
+            conferences: this.props.conferences,
+            questionnaires: this.props.questionnaires,
+            participants: '',
+            event: { eventType: "Questionnaire" },
             yesterday: Datetime.moment().subtract( 1, 'day' )
         }
+    }
+    handleSubmit = () => {
+        let eventId = '';
+        if (this.state.event.eventType === "Questionnaire") {
+            eventId = this.state.event.questionnaire;            
+        }
+        else {
+            eventId = this.state.event.conference;            
+        }
+        let schedule = {events: []};
+        this.state.participants.forEach(participant => {
+            schedule.events.push({
+                userId: participant.id, 
+                eventId: eventId, 
+                eventType: this.state.event.eventType, 
+                dateTime: this.state.event.dateTime
+            });
+        })
+        this.props.handleSubmit(schedule);
     }
     handleChange = (changeEvent) => {
         let event = {...this.state.event};
@@ -24,10 +45,11 @@ export default class EventScheduler extends Component {
         let event = {...this.state.event};
         event.dateTime = current.toJSON();
         this.setState ({event: event});
-        console.log(this.state);        
+        //console.log(this.state);        
     }
-    handleParticipantsChange = (changeEvent) => {
-        console.log(changeEvent);
+    handleParticipantsChange = (participants) => {
+        //console.log("participant change")
+        this.setState({participants: participants})
     }
     valid = ( current ) => {
         return current.isAfter( this.state.yesterday );
@@ -47,13 +69,45 @@ export default class EventScheduler extends Component {
             <tr><td><h4>Event type:</h4></td><td>
             <select 
                 id={"eventType"}            
-                defaultValue={"Questionnaire"}
+                defaultValue={this.state.event.eventType}
                 onChange={this.handleChange}
             >
-            <option value="Questionnaire">Questionnaire</option>
-            <option value="Conference">Conference</option>
-            </select>
+                <option value="Questionnaire">Questionnaire</option>
+                <option value="Conference">Conference</option>
+            </select>            
             </td></tr>
+            {this.state.event.eventType === "Conference" &&
+                <tr><td><h4>Conference</h4></td>
+                <td>
+                <select 
+                id={"conference"}            
+                defaultValue={this.state.conferences[0]}
+                onChange={this.handleChange}
+                >
+                {
+                    this.state.conferences.map(conference => {
+                        return <option value={conference.id} key={conference.id}>{conference.name}</option>
+                    })
+                }
+                </select>
+                </td></tr>
+            }
+            {this.state.event.eventType === "Questionnaire" &&
+                <tr><td><h4>Questionnaire</h4></td>
+                <td>
+                <select 
+                id={"questionnaire"}            
+                defaultValue={this.state.questionnaires[0]}
+                onChange={this.handleChange}
+                >
+                {
+                    this.state.questionnaires.map(questionnaire => {
+                        return <option value={questionnaire.id} key={questionnaire.id}>{questionnaire.name}</option>
+                    })
+                }
+                </select>
+                </td></tr>
+            }
             <tr><td><h4>Date/Time</h4></td><td>
                 <Datetime 
                     input={ true } 
@@ -66,14 +120,14 @@ export default class EventScheduler extends Component {
             <tr><td><h4>Participants:</h4></td><td>
                 <ParticipantWidget 
                     users={this.state.users}
-                    onChange={this.handleParticipantsChange}
+                    handleParticipantsChange={this.handleParticipantsChange}
                 />
             </td></tr>
             <tr><td>
             <button style={{
                 padding: '10px',
                 backgroundColor: '#62DFF8'}}
-                onClick={this.props.handleSubmit}
+                onClick={this.handleSubmit}
                 >Submit</button>
             </td><td>
                 <button style={{
