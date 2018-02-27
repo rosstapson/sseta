@@ -66,12 +66,16 @@ class App extends Component {
     }
   }
   checkToken = async() => {
+    let token = localStorage.getItem('token');
+    if (!token) {
+      return false;
+    }
     let config = {
         method: 'post',
         headers: {
           'content-type': 'application/json'
         },
-        body: JSON.stringify({token: localStorage.getItem('token')})
+        body: JSON.stringify({token: token})
     }
     try {
       let response = await fetch(API_ROOT + "/check_token", config);
