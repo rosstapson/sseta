@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cuid": "^2.0.2",
     "jsonwebtoken": "^8.1.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
