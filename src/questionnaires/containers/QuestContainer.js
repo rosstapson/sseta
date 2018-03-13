@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import QuestionnaireWidget from '../components/QuestionnaireWidget';
+import {API_ROOT} from '../../config';
 
 export default class QuestContainer extends Component {
     constructor(props) {
@@ -10,17 +11,45 @@ export default class QuestContainer extends Component {
             questionnaire: this.props.questionnaire
         }
     }
-    handleSubmit = () => {
+    handleSubmit = (answers) => {
+        // fetch etc.
+        let result = {};
+        result.userId = localStorage.getItem("id");
+        result.questionnaireId = this.state.questionnaire.id;
+        result.answers = answers;        
         if (this.state.isPreview) {
             alert("Submit (Preview)");
+            return;
         }
-        
-    }
-    handleChange = (event) => {       
-        let result = {...this.state.result};        
-        result[event.question] = event.answer;        
-        this.setState({ result: result});        
-    }
+        let config = {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({result: result, token: localStorage.getItem("token")})
+            
+        }
+        try {
+            return fetch(API_ROOT + "/answers", config)
+                .then(response =>
+                    {
+                        if (!response.ok) {
+                            alert("Unable to post answers");
+                            return;
+                        }
+                        else {                          
+                          response.json().then(json => {
+                              // server returns questionnaire
+                            alert("Answers posted successfully")
+                          });                  
+                        }
+                    });
+                
+            }
+            catch(err) {
+                alert(err);
+            }        
+    }    
     render() {
         return(
             <div style={{                
@@ -30,26 +59,12 @@ export default class QuestContainer extends Component {
                 justifyContent: 'center',
                 
             }}>
-            <h1 className="App-intro">{this.state.questionnaire.name}</h1><br/><br/><br/>
-            <QuestionnaireWidget                
-                questionnaire={this.state.questionnaire} 
-                handleChange={this.handleChange} />
-            <div>
-            <button 
-                style={{
-                    padding: '10px',
-                    backgroundColor: '#62DFF8'
-                }}
-                onClick={this.handleSubmit}>Submit</button>
-            <button 
-                style={{
-                    padding: '10px',
-                    backgroundColor: '#62DFF8'
-                }}
-                onClick={this.props.handleCancel}>Cancel</button>
+                <h1 className="App-intro">{this.state.questionnaire.name}</h1><br/><br/><br/>
+                <QuestionnaireWidget                
+                    questionnaire={this.state.questionnaire}
+                    handleCancel={this.props.handleCancel}
+                    handleSubmit={this.handleSubmit} />
             </div>
-      
-              </div>
         )
     }
 }

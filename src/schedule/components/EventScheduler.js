@@ -39,6 +39,7 @@ export default class EventScheduler extends Component {
     handleChange = (changeEvent) => {
         let event = {...this.state.event};
         event[changeEvent.target.id] = changeEvent.target.value;
+        //console.log(event)
         this.setState({ event: event })
     }
     handleDatetimeChange = (current) => {
@@ -108,6 +109,13 @@ export default class EventScheduler extends Component {
                 </select>
                 </td></tr>
             }
+            <tr><td><h4>Reference</h4></td><td>
+                <input 
+                    type='text'
+                    id={"reference"}
+                    onChange={this.handleChange}
+                />
+            </td></tr>
             <tr><td><h4>Date/Time</h4></td><td>
                 <Datetime 
                     input={ true } 

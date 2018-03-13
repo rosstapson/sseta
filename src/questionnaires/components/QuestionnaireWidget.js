@@ -16,13 +16,21 @@ export default class QuestionnaireWidget extends Component {
             questionnaire: questionnaire
         }
     }
+    handleSubmit = () => {
+        let answers = [];
+        this.state.questionnaire.formEntries.forEach(question => {
+            answers.push({questionId: question.id, answer: question.answer})
+            //answers[question.id] = question.answer;
+        })
+        this.props.handleSubmit(answers);
+    }
     handleAnswer = (answer) => {        
         let questionnaire = {...this.state.questionnaire};
         questionnaire.formEntries.forEach(question => {            
             if (question.id === answer.id) {
                 question.answer = answer.answer;
             }
-        })
+        });
         this.setState({questionnaire: questionnaire});        
     }
     
@@ -35,6 +43,7 @@ export default class QuestionnaireWidget extends Component {
                 justifyContent: 'center',
                
               }}>
+              
             <table>
                 <tbody>
                     {this.state.questionnaire.formEntries.map((question) => {
@@ -47,6 +56,21 @@ export default class QuestionnaireWidget extends Component {
                             </td></tr>
                        )
                     })}
+                    <tr><td>
+                    <button 
+                style={{
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'
+                }}
+                onClick={this.handleSubmit}>Submit</button>
+                
+                <button 
+                style={{
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'
+                }}
+                onClick={this.props.handleCancel}>Cancel</button>
+                </td></tr>
                 </tbody>
             </table>
             </div>

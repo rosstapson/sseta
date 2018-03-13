@@ -18,8 +18,7 @@ export default class ScheduleContainer extends Component {
     hideMe = () => {
         this.setState({showMySchedule: false, showScheduleEvent: false})
     }
-    handleSubmit = (schedule) => { //scheduleEntries will be {schedule: [event.userId, event.eventId, event.eventType, event.dateTime,}
-    //console.log(scheduleEntries) 
+    handleSubmit = (schedule) => { 
         let config = {
             method: 'post',
             headers: {
