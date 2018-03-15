@@ -4,6 +4,7 @@ import QuestionnaireList from './questionnaires/containers/QuestionnaireList';
 import CaptureContainer from './capture/containers/CaptureContainer';
 import LearnerContainer from './learner/containers/LearnerContainer';
 import ScheduleContainer from './schedule/containers/ScheduleContainer';
+import TemplateContainer from './template/containers/TemplateContainer';
 import UserList from './users/containers/UserList';
 import './App.css';
 //import { API_ROOT } from './config';
@@ -63,6 +64,9 @@ export default class Home extends Component {
                     id={localStorage.getItem("id")}
                 />
                 <LearnerContainer />
+                {localStorage.getItem("isAdmin") &&
+                    <TemplateContainer />
+                }
                 {localStorage.getItem("isAdmin") &&
                     <QuestionnaireList />
                 }

@@ -16,8 +16,7 @@ export default class CaptureContainer extends Component {
               'content-type': 'application/json'
             },
             body: JSON.stringify({questionnaire: questionnaire, token: localStorage.getItem("token")})
-            
-        }
+        };
         try {
             return fetch(API_ROOT + "/questionnaires", config)
                 .then(response =>
@@ -28,9 +27,7 @@ export default class CaptureContainer extends Component {
                         else {
                           response.json().then(json => {
                             alert("Questionnaire saved");
-                            let myQuestionnaires = this.state.myQuestionnaires.slice();
-                            myQuestionnaires.push(json.questionnaire)
-                            this.setState({showCapture: false, myQuestionnaires: myQuestionnaires});
+                            this.setState({showCapture: false})
                           });                  
                         }
                     })
