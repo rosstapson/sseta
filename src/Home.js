@@ -35,7 +35,14 @@ export default class Home extends Component {
             //role stuff for display            
         }
     }
-    
+    arbTest = () => {
+        let x = 15;
+        let binString = x.toString(2);
+        console.log(binString);
+        let y = 5; 
+        console.log(y.toString(2));
+        console.log((x & y).toString(2))
+    }
     toggleQuestionnaire = () => {
         this.setState({
             questionnairePending: !this.state.questionnairePending,
@@ -69,6 +76,11 @@ export default class Home extends Component {
                 <div><a href="https://mysseta.slack.com/messages/C8EHYBB52/">Slack Video Conferencing</a></div>
                 <br/><br/>
                 <div>
+                <button style={{    
+                    padding: '10px',
+                    backgroundColor: '#62DFF8'
+                    }}
+                    onClick={this.arbTest}>Arb Test</button>
                 <button style={{    
                     padding: '10px',
                     backgroundColor: '#62DFF8'

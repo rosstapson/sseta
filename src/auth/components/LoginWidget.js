@@ -38,16 +38,6 @@ export default class  LoginWidget extends Component {
                     onChange={this.handleChange}
                     />
                     <br/><br/>
-                
-                <button 
-                    type="button"
-                    style={{
-                        padding: '10px',
-                        backgroundColor: '#62DFF8'
-                    }}
-                    onClick={this.props.seeAllUsers}>All Users, Zomg</button>
-
-                
                 <button 
                     type="button"
                     style={{
