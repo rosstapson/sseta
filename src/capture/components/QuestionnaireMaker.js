@@ -95,10 +95,8 @@ export default class Questionnaire extends Component {
         <div>
           <table style={{width: '80%'}}><tbody>           
             <tr><td><h4>Questionnaire name:</h4></td><td><input type='text' id='title'onChange={this.handleMetaChange}/></td></tr>
-            <tr><td><h4>Questionnaire reference:</h4></td><td><input type='text' id='reference'onChange={this.handleMetaChange}/></td></tr>
-            <tr><td><h4>Training provider:</h4></td><td><input type='text' id='trainingProvider'onChange={this.handleMetaChange}/></td></tr>
-            <tr><td><h4>Client Company:</h4></td><td><input type='text' id='clientCompany'onChange={this.handleMetaChange}/></td></tr>
-            <tr><td><h4>Client Division:</h4></td><td><input type='text' id='clientDivision'onChange={this.handleMetaChange}/></td></tr>
+            <tr><td><h4>Reference/Relevance:</h4></td><td><input type='text' id='reference'onChange={this.handleMetaChange}/></td></tr>
+            <tr><td><h4>Category:</h4></td><td><input type='text' id='category'onChange={this.handleMetaChange}/></td></tr>
           </tbody></table>
           <table style={{width: '80%'}}><tbody>
             <tr>

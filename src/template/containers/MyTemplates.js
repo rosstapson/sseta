@@ -12,17 +12,18 @@ export default class MyTemplates extends Component {
     let hostEmployerProgram = [];
     let sdpProgram = [];
     program.forEach(entry => {
+      console.log(entry)
       switch(entry.category) {
-        case "learner":
+        case "Learner":
           learnerProgram.push(entry);
           break;
-        case "lead employer":
+        case "Lead Employer":
           leadEmployerProgram.push(entry);
           break;
-        case "host employer":
+        case "Host Employer":
           hostEmployerProgram.push(entry);
           break;
-        case "sdp":
+        case "SDP":
           sdpProgram.push(entry);
           break;
         default: 
@@ -30,6 +31,7 @@ export default class MyTemplates extends Component {
       }
     });
     this.state = {
+      questionnaires:this.props.questionnaires,
       program: this.props.program,
       learnerProgram: learnerProgram,
       leadEmployerProgram: leadEmployerProgram,
@@ -51,16 +53,33 @@ export default class MyTemplates extends Component {
           <h2><Program 
             category={"Learner"}
             program={this.state.learnerProgram}
+            questionnaires={this.state.questionnaires} 
+            handleAdd={this.props.handleAdd}
           /></h2>          
         </TabPanel>
         <TabPanel>
-          <h2><Program category={"Lead Employer"} /></h2>
+          <h2><Program 
+            category={"Lead Employer"} 
+            program={this.state.leadEmployerProgram} 
+            questionnaires={this.state.questionnaires}
+            handleAdd={this.props.handleAdd}
+            /></h2>
         </TabPanel>
         <TabPanel>
-          <h2><Program category={"Host Employer"} /></h2>
+          <h2><Program 
+            category={"Host Employer"} 
+            program={this.state.hostEmployerProgram} 
+            questionnaires={this.state.questionnaires}
+            handleAdd={this.props.handleAdd}
+            /></h2>
         </TabPanel>
         <TabPanel>
-        <h2><Program category={"SDP"} /></h2>
+        <h2><Program 
+          category={"SDP"} 
+          program={this.state.sdpProgram} 
+          questionnaires={this.state.questionnaires}
+          handleAdd={this.props.handleAdd}
+          /></h2>
       </TabPanel>
     </Tabs>
     <button style={{

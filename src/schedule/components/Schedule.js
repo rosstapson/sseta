@@ -17,7 +17,7 @@ export default class Schedule extends Component {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center'
-            }}>              
+            }}>
             <table><tbody>
             <tr><td colSpan={4}><h1 className="App-intro">My Schedule</h1></td></tr>
             <tr >
